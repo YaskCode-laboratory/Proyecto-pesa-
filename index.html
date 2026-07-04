@@ -1,34 +1,66 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Proyecto Web</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Gestor de Pesas</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="app-container">
+        <header class="header">
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <h1>Gestor de Pesas</h1>
+        </header>
 
-    <h1>¡Hola, mundo desde mi proyecto!</h1>
-    <button id="miBoton">Haz clic aquí</button>
+        <nav class="sidebar" id="sidebar">
+            <ul class="menu-list">
+                <li><a href="#" class="menu-item">Rutinas</a></li>
+                <li><a href="#" class="menu-item">Gráficas</a></li>
+                <li><a href="#" class="menu-item">Ejercicios Recomendados</a></li>
+                <li><a href="#" class="menu-item">Opciones</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <section class="dashboard">
+                <div class="card">
+                    <h2>Entrenamiento de Hoy</h2>
+                    <p class="placeholder-text">No hay entrenamientos programados</p>
+                </div>
+
+                <div class="card">
+                    <h2>Último Entrenamiento</h2>
+                    <p class="placeholder-text">Sin datos registrados</p>
+                </div>
+
+                <div class="card">
+                    <h2>Objetivo Semanal</h2>
+                    <p class="placeholder-text">0 / 5 sesiones</p>
+                </div>
+
+                <div class="card">
+                    <h2>Peso Total</h2>
+                    <p class="placeholder-text">0 kg</p>
+                </div>
+            </section>
+
+            <section class="quick-actions">
+                <h2>Acciones Rápidas</h2>
+                <div class="action-grid">
+                    <button class="action-btn">Añadir Serie</button>
+                    <button class="action-btn">Nuevo Ejercicio</button>
+                    <button class="action-btn">Ver Progreso</button>
+                    <button class="action-btn">Calculadora</button>
+                </div>
+            </section>
+        </main>
+    </div>
 
     <script src="script.js"></script>
 </body>
-=======
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Proyecto Web</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <h1>¡Hola, mundo desde mi proyecto!</h1>
-    <button id="miBoton">Haz clic aquí</button>
-
-    <script src="script.js"></script>
-</body>
->>>>>>> 18dedd678302cb038580e3eead0903b5bf44e21b
 </html>
