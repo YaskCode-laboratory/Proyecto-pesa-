@@ -1,7 +1,7 @@
-// Seleccionamos el botón por su ID
-const boton = document.getElementById('miBoton');
-
-// Escuchamos el evento de clic
-boton.addEventListener('click', () => {
-    alert('¡Felicidades! Tu JS, HTML y CSS están conectados correctamente.');
+document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+    });
 });
