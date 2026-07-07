@@ -3,59 +3,351 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor de Pesas</title>
+    <title>Gestor de Pesas Pro v2026</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
-    <div class="app-container">
-        <header class="header">
-            <div class="menu-toggle" id="menuToggle">
-                <span></span>
-                <span></span>
-                <span></span>
+
+    <div class="login-container" id="loginScreen">
+        <div class="login-branding">
+            <div class="branding-content">
+                <span class="badge-tech">COMUNIDAD FIT</span>
+                <h1>FORJA TU <br><span class="text-highlight">DISCIPLINA</span></h1>
+                <p>Monitorea tus cargas, rompe tus récords y mantén el control de tu progreso diario.</p>
             </div>
-            <h1>Gestor de Pesas</h1>
+        </div>
+
+        <div class="login-form-area">
+            <div class="login-card">
+                <div class="auth-tabs" id="authTabs">
+                    <button type="button" class="tab-btn active" id="tabLogin" onclick="cambiarPestaña('login')">Ingresar</button>
+                    <button type="button" class="tab-btn" id="tabRegister" onclick="cambiarPestaña('register')">Registrarse</button>
+                </div>
+
+                <form id="loginForm" onsubmit="manejarIngreso(event)">
+                    <h2>Identifícate</h2>
+                    <p class="subtitle">Ingresa tus credenciales registradas</p>
+                    <div id="errorMessage" class="error-box" style="display: none;">
+                        <span id="errorText"></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="loginEmail">Correo Electrónico</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-envelope input-icon"></i>
+                            <input type="email" id="loginEmail" placeholder="ejemplo@correo.com" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="loginPassword">Contraseña</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <input type="password" id="loginPassword" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: right; margin-bottom: 15px;">
+                        <a href="#" onclick="cambiarPestaña('recover')" style="color: #ffa502; font-size: 14px; text-decoration: none;">¿Olvidaste tu contraseña?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn-login">Entrar al Gestor <i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+
+                <form id="registerForm" onsubmit="manejarRegistro(event)" style="display: none;">
+                    <h2>Crea tu Cuenta</h2>
+                    <p class="subtitle">Regístrate para poder iniciar sesión</p>
+                    <div class="input-group">
+                        <label for="regUser">Usuario</label>
+                        <div class="input-wrapper"><i class="fa-solid fa-user input-icon"></i><input type="text" id="regUser" required></div>
+                    </div>
+                    <div class="input-group">
+                        <label for="regEmail">Correo Electrónico</label>
+                        <div class="input-wrapper"><i class="fa-solid fa-envelope input-icon"></i><input type="email" id="regEmail" required></div>
+                    </div>
+                    <div class="input-group">
+                        <label for="regPassword">Contraseña</label>
+                        <div class="input-wrapper"><i class="fa-solid fa-lock input-icon"></i><input type="password" id="regPassword" required></div>
+                    </div>
+                    <button type="submit" class="btn-login" style="background: #2ed573;">Registrarse</button>
+                </form>
+
+                <form id="recoverForm" onsubmit="manejarRecuperacion(event)" style="display: none;">
+                    <h2>Recuperar Cuenta</h2>
+                    <p class="subtitle" id="recoverSubtitle">Introduce tu correo para enviarte un código de verificación</p>
+                    
+                    <div id="recoverStep1">
+                        <div class="input-group">
+                            <label for="recoverEmail">Correo Electrónico</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-envelope input-icon"></i>
+                                <input type="email" id="recoverEmail" placeholder="ejemplo@correo.com">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-login" style="background: #ffa502;">Enviar Código <i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+
+                    <div id="recoverStep2" style="display: none;">
+                        <div class="input-group">
+                            <label for="recoverCode">Código de Verificación</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-key input-icon"></i>
+                                <input type="text" id="recoverCode" placeholder="Ingresa el código">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="recoverNewPassword">Nueva Contraseña</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-lock input-icon"></i>
+                                <input type="password" id="recoverNewPassword" placeholder="••••••••">
+                            </div>
+                        </div>
+                        <button type="button" onclick="verificarCodigoYCambiar()" class="btn-login" style="background: #2ed573;">Actualizar Contraseña <i class="fa-solid fa-check"></i></button>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 15px;">
+                        <a href="#" onclick="cambiarPestaña('login')" style="color: #ccc; font-size: 14px; text-decoration: none;"><i class="fa-solid fa-arrow-left"></i> Volver al Login</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container" id="appScreen" style="display: none;">
+        <header class="header">
+            <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
+            <h1>Gestor de Pesas Pro <span id="saludoUsuario" style="font-size: 16px; color: #ccc; margin-left: 15px;"></span></h1>
         </header>
 
         <nav class="sidebar" id="sidebar">
             <ul class="menu-list">
-                <li><a href="#" class="menu-item">Rutinas</a></li>
-                <li><a href="#" class="menu-item">Gráficas</a></li>
-                <li><a href="#" class="menu-item">Ejercicios Recomendados</a></li>
-                <li><a href="#" class="menu-item">Opciones</a></li>
+                <li><a href="#" id="link-rutinas" class="menu-item active" onclick="navegarA('rutinas')"><i class="fa-solid fa-dumbbell icon-menu"></i> Rutinas e Inteligencia</a></li>
+                <li><a href="#" id="link-graficas" class="menu-item" onclick="navegarA('graficas')"><i class="fa-solid fa-chart-simple icon-menu"></i> Gráficas de Progreso</a></li>
+                <li><a href="#" id="link-recomendados" class="menu-item" onclick="navegarA('recomendados')"><i class="fa-solid fa-fire-flame-curved icon-menu"></i> Ejercicios Sugeridos</a></li>
+                <li><a href="#" id="link-opciones" class="menu-item" onclick="navegarA('opciones')"><i class="fa-solid fa-sliders icon-menu"></i> Opciones</a></li>
             </ul>
         </nav>
 
-        <main class="main-content">
-            <section class="dashboard">
-                <div class="card">
-                    <h2>Entrenamiento de Hoy</h2>
-                    <p class="placeholder-text">No hay entrenamientos programados</p>
+        <main class="main-content" id="mainContent">
+            
+            <section id="sec-rutinas" class="app-section-panel active">
+                <div class="card web-info-card">
+                    <h2><i class="fa-solid fa-circle-info"></i> Propósito de Nuestra Plataforma</h2>
+                    <p>Esta aplicación te ayuda a <strong>organizar tu tiempo en el gimnasio</strong>. Calcula automáticamente las horas totales de esfuerzo que requiere tu nivel de carga, reparte esos minutos entre los días específicos que elijas entrenar y te ofrece un sensor interactivo para alternar tus ráfagas de ejercicio con tiempos científicos de descanso.</p>
+                </div>
+
+                <div class="card setup-card">
+                    <h2><i class="fa-solid fa-calendar-days"></i> 1. Elige tus Días de Gimnasio</h2>
+                    <p class="subtitle">Selecciona qué días vas a entrenar esta semana:</p>
+                    <div class="week-selector">
+                        <button type="button" class="day-btn" onclick="toggleDiaSemana(this, 'Lunes')">Lun</button>
+                        <button type="button" class="day-btn" onclick="toggleDiaSemana(this, 'Martes')">Mar</button>
+                        <button type="button" class="day-btn" onclick="toggleDiaSemana(this, 'Miércoles')">Mié</button>
+                        <button type="button" class="day-btn" onclick="toggleDiaSemana(this, 'Jueves')">Jue</button>
+                        <button type="button" class="day-btn" onclick="toggleDiaSemana(this, 'Viernes')">Vie</button>
+                        <button type="button" class="day-btn" onclick="toggleDiaSemana(this, 'Sábado')">Sáb</button>
+                    </div>
+
+                    <div class="distribution-display" id="distributionDisplay" style="margin-top: 15px; display: none;">
+                        <div class="dist-box">
+                            <span class="dist-title">Volumen Total Semanal Sugerido:</span>
+                            <span class="dist-value" id="totalSemanalTxt">0 min</span>
+                        </div>
+                        <div class="dist-box highlight-box">
+                            <span class="dist-title">⏱️ Debes durar por cada día:</span>
+                            <span class="dist-value" id="tiempoDiarioTxt">0 min por sesión</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card timer-card">
+                    <div class="timer-header">
+                        <h2><i class="fa-solid fa-stopwatch"></i> 2. Sensor de Control de Serie y Descanso</h2>
+                        <span id="timerStatusMode" class="mode-badge ejercicio">MODO: EJERCICIO 🏋️‍♂️</span>
+                    </div>
+                    <div class="timer-display-container">
+                        <div class="timer-digits" id="timerDisplay">00:00</div>
+                        <div class="timer-controls">
+                            <button id="btnStartTimer" onclick="alternarTemporizador()" class="btn-timer-play"><i class="fa-solid fa-play"></i> Iniciar</button>
+                            <button id="btnDescanso" onclick="activarModoDescanso()" class="btn-timer-break" style="display:none;"><i class="fa-solid fa-mug-hot"></i> Tomar Descanso</button>
+                            <button onclick="reiniciarTemporizador()" class="btn-timer-reset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <h2>Último Entrenamiento</h2>
-                    <p class="placeholder-text">Sin datos registrados</p>
+                    <h2><i class="fa-solid fa-dumbbell"></i> 3. Registrar Peso y Calcular Tiempos</h2>
+                    <form id="routineForm" onsubmit="agregarEjercicioTabla(event)">
+                        <div class="form-row">
+                            <div class="input-group-inline">
+                                <label>Ejercicio (Solo Letras)</label>
+                                <input type="text" id="exerciseName" placeholder="Ej. Press Banca" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" oninput="validarLetrasInput(this)" required>
+                            </div>
+                            <div class="input-group-inline-short">
+                                <label>Peso (kg)</label>
+                                <input type="number" id="weightInput" min="1" placeholder="0" required>
+                            </div>
+                            <div class="input-group-inline-short">
+                                <label>Series</label>
+                                <input type="number" id="seriesInput" min="1" placeholder="4" required>
+                            </div>
+                            <div class="input-group-inline-short">
+                                <label>Reps</label>
+                                <input type="number" id="repsInput" min="1" placeholder="10" required>
+                            </div>
+                            <div class="input-group-inline-btn" style="display: flex; gap: 5px; align-items: flex-end;">
+                                <button type="submit" class="btn-add-exercise" title="Agregar a la tabla"><i class="fa-solid fa-plus"></i></button>
+                                <button type="button" class="btn-add-exercise" style="background: #ffa502; width: auto; padding: 0 15px;" onclick="calcularYDistribuirTiempo()"><i class="fa-solid fa-wand-magic-sparkles"></i> Calcular Tiempos</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
 
                 <div class="card">
-                    <h2>Objetivo Semanal</h2>
-                    <p class="placeholder-text">0 / 5 sesiones</p>
-                </div>
-
-                <div class="card">
-                    <h2>Peso Total</h2>
-                    <p class="placeholder-text">0 kg</p>
+                    <h2><i class="fa-solid fa-list-check"></i> Bitácora de Cargas Activas</h2>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>Ejercicio</th><th>Peso (kg)</th><th>Series</th><th>Repeticiones</th><th>Volumen</th><th>Acción</th></tr>
+                            </thead>
+                            <tbody id="routineTableBody">
+                                <tr><td colspan="6" style="text-align:center; color:#aaa;">No hay cargas registradas hoy.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
 
-            <section class="quick-actions">
-                <h2>Acciones Rápidas</h2>
-                <div class="action-grid">
-                    <button class="action-btn">Añadir Serie</button>
-                    <button class="action-btn">Nuevo Ejercicio</button>
-                    <button class="action-btn">Ver Progreso</button>
-                    <button class="action-btn">Calculadora</button>
+            <section id="sec-graficas" class="app-section-panel">
+                <div class="card">
+                    <h2><i class="fa-solid fa-chart-line"></i> Analíticas de Rendimiento General</h2>
+                    <p class="subtitle">Análisis en tiempo real de tu volumen acumulado y pesos máximos.</p>
+                    
+                    <div class="analytics-grid">
+                        <div class="metric-card">
+                            <span class="metric-title">Volumen Total Levantado</span>
+                            <span class="metric-value" id="metricVolumenTotal">0 kg</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-title">Ejercicios Ejecutados</span>
+                            <span class="metric-value" id="metricTotalEjercicios">0</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-title">Carga Máxima de Hoy</span>
+                            <span class="metric-value" id="metricCargaMax">0 kg</span>
+                        </div>
+                    </div>
+
+                    <div class="chart-container-mock">
+                        <h3>Distribución de Intensidad de las Cargas</h3>
+                        <div class="progress-bar-container">
+                            <span class="progress-label">Fuerza Pesada con Barra / Mancuernas (>50kg)</span>
+                            <div class="progress-track"><div id="barFuerza" class="progress-fill" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <span class="progress-label">Hipertrofia Moderada (15kg - 50kg)</span>
+                            <div class="progress-track"><div id="barHipertrofia" class="progress-fill" style="width: 0%; background: #ffa502;"></div></div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <span class="progress-label">Carga Ligera / Aislamiento (&lt;15kg)</span>
+                            <div class="progress-track"><div id="barResistencia" class="progress-fill" style="width: 0%; background: #2ed573;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-recomendados" class="app-section-panel">
+                <div class="card">
+                    <h2><i class="fa-solid fa-user-ninja"></i> Biblioteca de Ejercicios de Pesas Recomendados (2026)</h2>
+                    <p class="subtitle">Tarjetas explicativas con parámetros optimizados y trayectoria de pesos libres.</p>
+                    
+                    <div class="exercises-gallery">
+                        <div class="exercise-card-item">
+                            <div class="ex-card-image" style="background-image: url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=500');">
+                                <span class="ex-badge push">PESA / EMPUJE</span>
+                            </div>
+                            <div class="ex-card-content">
+                                <h3>Press de Banca con Barra</h3>
+                                <p>Sujeta la barra con agarre prono un poco más ancho que tus hombros. Baja controladamente rompiendo la inercia hasta rozar el pecho inferior y empuja con potencia hacia arriba bloqueando el core.</p>
+                                <div class="ex-meta"><span><i class="fa-solid fa-layer-group"></i> 4 Series</span><span><i class="fa-solid fa-repeat"></i> 8-12 Reps</span></div>
+                            </div>
+                        </div>
+                        <div class="exercise-card-item">
+                            <div class="ex-card-image" style="background-image: url('https://images.unsplash.com/photo-1434682881908-b43d0467b798?q=80&w=500');">
+                                <span class="ex-badge pull">PESA / TIRÓN</span>
+                            </div>
+                            <div class="ex-card-content">
+                                <h3>Remo Inclinado con Barra Libre</h3>
+                                <p>Flexiona ligeramente las rodillas, inclina el torso hacia adelante manteniendo la espalda lumbar neutra. Conduce los codos firmemente hacia atrás arrastrando la barra directo a tu ombligo.</p>
+                                <div class="ex-meta"><span><i class="fa-solid fa-layer-group"></i> 4 Series</span><span><i class="fa-solid fa-repeat"></i> 10-12 Reps</span></div>
+                            </div>
+                        </div>
+                        <div class="exercise-card-item">
+                            <div class="ex-card-image" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=500');">
+                                <span class="ex-badge legs">PESA / PIERNAS</span>
+                            </div>
+                            <div class="ex-card-content">
+                                <h3>Sentadilla Trasera con Barra</h3>
+                                <p>Apoya la barra firmemente sobre tus trapecios altos. Desciende la cadera de manera profunda rompiendo el ángulo de 90° de tus rodillas, empujando el suelo con toda la planta del pie.</p>
+                                <div class="ex-meta"><span><i class="fa-solid fa-layer-group"></i> 4 Series</span><span><i class="fa-solid fa-repeat"></i> 6-10 Reps</span></div>
+                            </div>
+                        </div>
+                        <div class="exercise-card-item">
+                            <div class="ex-card-image" style="background-image: url('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=500');">
+                                <span class="ex-badge push">PESA / HOMBROS</span>
+                            </div>
+                            <div class="ex-card-content">
+                                <h3>Press Militar con Mancuernas</h3>
+                                <p>Sentado en un banco a 90°. Levanta las mancuernas desde la altura de las orejas extendiendo los brazos totalmente sobre la vertical de tu cabeza, bajando de forma controlada reteniendo el peso.</p>
+                                <div class="ex-meta"><span><i class="fa-solid fa-layer-group"></i> 3 Series</span><span><i class="fa-solid fa-repeat"></i> 10-12 Reps</span></div>
+                            </div>
+                        </div>
+                        <div class="exercise-card-item">
+                            <div class="ex-card-image" style="background-image: url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=500');">
+                                <span class="ex-badge pull">PESA / BRAZOS</span>
+                            </div>
+                            <div class="ex-card-content">
+                                <h3>Curl de Bíceps con Barra Z</h3>
+                                <p>Toma la barra Z en la zona corrugada. Bloquea tus codos a los lados de la costilla y contrae los bíceps de manera aislada evitando balancear el torso o impulsarte con la cadera.</p>
+                                <div class="ex-meta"><span><i class="fa-solid fa-layer-group"></i> 3 Series</span><span><i class="fa-solid fa-repeat"></i> 12 Reps</span></div>
+                            </div>
+                        </div>
+                        <div class="exercise-card-item">
+                            <div class="ex-card-image" style="background-image: url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=500');">
+                                <span class="ex-badge legs">PESA / FEMORAL</span>
+                            </div>
+                            <div class="ex-card-content">
+                                <h3>Peso Muerto Rumano con Barra</h3>
+                                <p>Sujeta la barra frente a los muslos. Lleva los glúteos hacia atrás flexionando levemente las rodillas y desliza la barra pegada a tus espinillas estirando agresivamente la cadena posterior.</p>
+                                <div class="ex-meta"><span><i class="fa-solid fa-layer-group"></i> 4 Series</span><span><i class="fa-solid fa-repeat"></i> 8-10 Reps</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-opciones" class="app-section-panel">
+                <div class="card">
+                    <h2><i class="fa-solid fa-gears"></i> Preferencias del Panel de Control</h2>
+                    <p class="subtitle">Configura los parámetros globales de la aplicación móvil y de escritorio.</p>
+                    
+                    <div class="options-container">
+                        <div class="option-row">
+                            <div class="opt-info">
+                                <h4>Tema Visual de la Interfaz</h4>
+                                <p>Alternar entre modo oscuro estándar o modo de alto contraste para entrenamientos nocturnos.</p>
+                            </div>
+                            <button type="button" class="btn-toggle-switch" onclick="toggleCyberTheme()">Modo Cyberpunk</button>
+                        </div>
+                        <div class="option-row">
+                            <div class="opt-info">
+                                <h4>Borrar Registro en Caliente</h4>
+                                <p>Limpia por completo la bitácora de ejercicios actual y restablece las analíticas de volumen a cero.</p>
+                            </div>
+                            <button type="button" class="btn-danger-action" onclick="limpiarTodoElHistorial()">Formatear Tablas</button>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
