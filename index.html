@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Pesas Pro v2026</title>
+    <link rel="stylesheet" href="styles.css?v=20260922-3">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+
+    <div class="login-container" id="loginScreen">
+        <div class="login-branding">
+            <div class="branding-content">
+                <span class="badge-tech">COMUNIDAD FIT</span>
+                <h1>FORJA TU <br><span class="text-highlight">DISCIPLINA</span></h1>
+                <p>Monitorea tus cargas, rompe tus récords y mantén el control de tu progreso diario.</p>
+            </div>
+        </div>
+
+        <div class="login-form-area">
+            <div class="login-card">
+                <div class="auth-tabs" id="authTabs">
+                    <button type="button" class="tab-btn active" id="tabLogin" onclick="cambiarPestaña('login')">Ingresar</button>
+                    <button type="button" class="tab-btn" id="tabRegister" onclick="cambiarPestaña('register')">Registrarse</button>
+                </div>
+
+                <form id="loginForm" onsubmit="manejarIngreso(event)">
+                    <h2>Identifícate</h2>
+                    <p class="subtitle">Ingresa tus credenciales registradas</p>
+                    <div id="errorMessage" class="error-box" style="display: none;">
+                        <span id="errorText"></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="loginEmail">Correo Electrónico</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-envelope input-icon"></i>
+                            <input type="email" id="loginEmail" placeholder="ejemplo@correo.com" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="loginPassword">Contraseña</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <input type="password" id="loginPassword" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: right; margin-bottom: 15px;">
+                        <a href="#" onclick="cambiarPestaña('recover')" style="color: #ffa502; font-size: 14px; text-decoration: none;">¿Olvidaste tu contraseña?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn-login">Entrar al Gestor <i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+
+                <form id="registerForm" onsubmit="manejarRegistro(event)" style="display: none;">
+                    <h2>Crea tu Cuenta</h2>
+                    <p class="subtitle">Regístrate para poder iniciar sesión</p>
+                    <div class="input-group">
+                        <label for="regUser">Usuario</label>
+                        <div class="input-wrapper"><i class="fa-solid fa-user input-icon"></i><input type="text" id="regUser" required></div>
+                    </div>
+                    <div class="input-group">
+                        <label for="regEmail">Correo Electrónico</label>
+                        <div class="input-wrapper"><i class="fa-solid fa-envelope input-icon"></i><input type="email" id="regEmail" required></div>
+                    </div>
+                    <div class="input-group">
+                        <label for="regPassword">Contraseña</label>
+                        <div class="input-wrapper"><i class="fa-solid fa-lock input-icon"></i><input type="password" id="regPassword" required></div>
+                    </div>
+                    <button type="submit" class="btn-login" style="background: #2ed573;">Registrarse</button>
+                </form>
+
+                <form id="recoverForm" onsubmit="manejarRecuperacion(event)" style="display: none;">
+                    <h2>Recuperar Cuenta</h2>
+                    <p class="subtitle" id="recoverSubtitle">Introduce tu correo para enviarte un código de verificación</p>
+                    
+                    <div id="recoverStep1">
+                        <div class="input-group">
+                            <label for="recoverEmail">Correo Electrónico</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-envelope input-icon"></i>
+                                <input type="email" id="recoverEmail" placeholder="ejemplo@correo.com">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-login" style="background: #ffa502;">Enviar Código <i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+
+                    <div id="recoverStep2" style="display: none;">
+                        <div class="input-group">
+                            <label for="recoverCode">Código de Verificación</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-key input-icon"></i>
+                                <input type="text" id="recoverCode" placeholder="Ingresa el código">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="recoverNewPassword">Nueva Contraseña</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-lock input-icon"></i>
+                                <input type="password" id="recoverNewPassword" placeholder="••••••••">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="recoverConfirmPassword">Confirmar Contraseña</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-lock input-icon"></i>
+                                <input type="password" id="recoverConfirmPassword" placeholder="••••••••">
+                            </div>
+                        </div>
+                        <button type="button" onclick="verificarCodigoYCambiar()" class="btn-login" style="background: #2ed573;">Actualizar Contraseña <i class="fa-solid fa-check"></i></button>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 15px;">
+                        <a href="#" onclick="cambiarPestaña('login')" style="color: #ccc; font-size: 14px; text-decoration: none;"><i class="fa-solid fa-arrow-left"></i> Volver al Login</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container" id="appScreen" style="display: none;">
+        <header class="header">
+            <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
+            <h1>Gestor de Pesas Pro <span id="saludoUsuario" style="font-size: 16px; color: #ccc; margin-left: 15px;"></span></h1>
+        </header>
+
+        <nav class="sidebar" id="sidebar">
+            <ul class="menu-list">
+                <li><a href="#" id="link-rutinas" class="menu-item active" onclick="navegarA('rutinas')"><i class="fa-solid fa-dumbbell icon-menu"></i> Rutinas e Inteligencia</a></li>
+                <li><a href="#" id="link-graficas" class="menu-item" onclick="navegarA('graficas')"><i class="fa-solid fa-chart-simple icon-menu"></i> Gráficas de Progreso</a></li>
+                <li><a href="#" id="link-records" class="menu-item" onclick="navegarA('records')"><i class="fa-solid fa-trophy icon-menu"></i> Récords y Logros</a></li>
+                <li><a href="#" id="link-actividad" class="menu-item" onclick="navegarA('actividad')"><i class="fa-solid fa-clipboard-list icon-menu"></i> Actividad (Bitácora)</a></li>
+                <li><a href="#" id="link-recomendados" class="menu-item" onclick="navegarA('recomendados')"><i class="fa-solid fa-fire-flame-curved icon-menu"></i> Catálogo de Ejercicios</a></li>
+                <li><a href="#" id="link-opciones" class="menu-item" onclick="navegarA('opciones')"><i class="fa-solid fa-sliders icon-menu"></i> Opciones</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content" id="mainContent">
+            
+            <section id="sec-rutinas" class="app-section-panel active">
+                <div class="card web-info-card" id="bienvenidaRutinas">
+                    <h2><i class="fa-solid fa-robot"></i> Entrenamiento por Plantillas</h2>
+                    <p>Elige una plantilla de entrenamiento lista para usar, crea la tuya con nuestros <strong>104 ejercicios</strong> disponibles, o deja que la <strong>IA</strong> te arme el plan perfecto. Al iniciar una sesión podrás marcar cada ejercicio y usar nuestros <strong>puntos de descanso</strong> estilo Leap Fitness.</p>
+                </div>
+
+                <!-- Panel de recomendaciones de IA -->
+                <div class="card panel-recomendaciones" id="panelRecomendaciones" style="display:none;">
+                    <div class="section-actions">
+                        <h2><i class="fa-solid fa-brain"></i> Recomendaciones de tu Entrenador IA</h2>
+                        <span class="motor-badge" id="motorIABadge">heurística</span>
+                    </div>
+                    <p class="ia-consejo" id="iaConsejoTexto">Cargando consejo...</p>
+                    <div class="reco-grid">
+                        <div class="reco-card">
+                            <span class="reco-title">🔥 Racha actual</span>
+                            <strong id="rachaActualTxt">0 días</strong>
+                        </div>
+                        <div class="reco-card">
+                            <span class="reco-title">🏆 Mejor racha</span>
+                            <strong id="mejorRachaTxt">0 días</strong>
+                        </div>
+                        <div class="reco-card">
+                            <span class="reco-title">📋 Plantilla sugerida</span>
+                            <strong id="plantillaSugeridaTxt">-</strong>
+                        </div>
+                    </div>
+                    <div id="recoExtra" class="reco-extra">
+                        <div>
+                            <span class="reco-title">Ejercicios que no has hecho:</span>
+                            <span id="noRealizadosTxt" class="reco-chip">-</span>
+                        </div>
+                        <div>
+                            <span class="reco-title">Estancados (mismo peso 3+ sesiones):</span>
+                            <span id="estancadosTxt" class="reco-chip">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selector de plantillas -->
+                <div id="plantillaSelector">
+                    <div class="section-actions">
+                        <h2><i class="fa-solid fa-list"></i> Selecciona una Plantilla</h2>
+                        <div>
+                            <button type="button" class="btn-add-exercise" style="background:#a855f7; margin-right:8px;" onclick="mostrarCreadorPlantilla()"><i class="fa-solid fa-plus"></i> Crear Plantilla</button>
+                            <button type="button" class="btn-add-exercise" style="background:linear-gradient(135deg,#6366f1,#a855f7);" onclick="generarPlantillaIA()"><i class="fa-solid fa-wand-magic-sparkles"></i> Que la IA la cree</button>
+                        </div>
+                    </div>
+                    <div class="plantillas-grid" id="plantillasGrid">
+                        <div style="color:#aaa; padding:20px; text-align:center;">Cargando plantillas...</div>
+                    </div>
+                </div>
+
+                <!-- Vista de detalle de plantilla -->
+                <div id="plantillaDetalle" style="display:none;">
+                    <div class="card" style="margin-top:0;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                            <div>
+                                <h2 id="detallePlantillaNombre"></h2>
+                                <p id="detallePlantillaDesc" class="subtitle"></p>
+                            </div>
+                            <div>
+                                <button type="button" class="btn-timer-reset" onclick="volverAPlantillas()"><i class="fa-solid fa-arrow-left"></i> Volver</button>
+                            </div>
+                        </div>
+                        <div class="preview-ejercicios" id="detallePlantillaEjercicios" style="margin-top:15px;"></div>
+                        <button type="button" class="btn-login" style="margin-top:20px; width:100%;" onclick="iniciarSesionEntrenamiento()"><i class="fa-solid fa-play"></i> Iniciar Entrenamiento</button>
+                    </div>
+                </div>
+
+                <!-- Sesión de entrenamiento activa -->
+                <div id="sesionActiva" style="display:none;">
+                    <div class="card" style="margin-top:0;">
+                        <div class="timer-header">
+                            <div>
+                                <h2 id="sesionPlantillaNombre"></h2>
+                                <span class="subtitle" id="sesionProgresoTexto">0/0 ejercicios completados</span>
+                            </div>
+                            <button type="button" class="btn-danger-action" onclick="cancelarSesion()">Terminar Sesión</button>
+                        </div>
+
+                        <!-- Barra de progreso de sesión -->
+                        <div class="progreso-sesion" style="margin:15px 0;">
+                            <div class="progress-track" style="height:20px; border-radius:10px;">
+                                <div id="sesionProgressBar" class="progress-fill" style="width:0%; background:linear-gradient(90deg,#2ed573,#7bed9f); border-radius:10px;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Nivel del usuario -->
+                        <div class="nivel-info">
+                            <span class="nivel-badge" id="sesionNivelBadge">Nv 1</span>
+                            <div class="nivel-bar-container">
+                                <span class="nivel-label">Progreso al siguiente nivel</span>
+                                <div class="nivel-bar"><div id="nivelBarHoy" style="width:0%;"></div></div>
+                            </div>
+                        </div>
+
+                        <div id="listaEjerciciosSesion" style="margin-top:15px;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-graficas" class="app-section-panel">
+        <!-- Graficas de progreso -->
+        <div class="card">
+            <h2><i class="fa-solid fa-chart-line"></i> Analíticas de Rendimiento General</h2>
+            <p class="subtitle">Análisis en tiempo real de tu volumen acumulado y pesos máximos.</p>
+
+            <div class="analytics-grid">
+                <!-- Graficas追踪数据 -->
+                <div class="chart-box">
+                    <canvas id="progresoChart"></canvas>
+                </div>
+
+                <div class="metrics-container">
+                    <div class="metric-card">
+                        <span class="metric-title">Volumen Total Levantado</span>
+                        <span id="metricVolumenTotal" class="metric-value">0 kg</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-title">Ejercicios Ejecutados</span>
+                        <span id="metricTotalEjercicios" class="metric-value">0</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-title">Carga Máxima de Hoy</span>
+                        <span id="metricCargaMax" class="metric-value">0 kg</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+                <div class="card">
+                    <h2><i class="fa-solid fa-chart-line"></i> Analíticas de Rendimiento General</h2>
+                    <p class="subtitle">Análisis en tiempo real de tu volumen acumulado y pesos máximos.</p>
+                    
+                    <div class="analytics-grid">
+                        <div class="metric-card">
+                            <span class="metric-title">Volumen Total Levantado</span>
+                            <span class="metric-value" id="metricVolumenTotal2">0 kg</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-title">Ejercicios Ejecutados</span>
+                            <span class="metric-value" id="metricTotalEjercicios2">0</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-title">Carga Máxima de Hoy</span>
+                            <span class="metric-value" id="metricCargaMax2">0 kg</span>
+                        </div>
+                    </div>
+
+                    <div class="chart-container-mock">
+                        <h3>Distribución de Intensidad de las Cargas</h3>
+                        <div class="progress-bar-container">
+                            <span class="progress-label">Fuerza Pesada con Barra / Mancuernas (>50kg)</span>
+                            <div class="progress-track"><div id="barFuerza" class="progress-fill" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <span class="progress-label">Hipertrofia Moderada (15kg - 50kg)</span>
+                            <div class="progress-track"><div id="barHipertrofia" class="progress-fill" style="width: 0%; background: #ffa502;"></div></div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <span class="progress-label">Carga Ligera / Aislamiento (&lt;15kg)</span>
+                            <div class="progress-track"><div id="barResistencia" class="progress-fill" style="width: 0%; background: #2ed573;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-records" class="app-section-panel">
+                <div class="card">
+                    <h2><i class="fa-solid fa-trophy"></i> Récords y Logros</h2>
+                    <p class="subtitle">Tus mejores marcas por ejercicio y las medallas que has desbloqueado.</p>
+                    <div class="racha-grid">
+                        <div class="racha-card">
+                            <span class="racha-icon">🔥</span>
+                            <div class="racha-info"><strong id="recRachaActual">0</strong><span>días en racha</span></div>
+                        </div>
+                        <div class="racha-card">
+                            <span class="racha-icon">🏆</span>
+                            <div class="racha-info"><strong id="recMejorRacha">0</strong><span>mejor racha</span></div>
+                        </div>
+                        <div class="racha-card">
+                            <span class="racha-icon">🎯</span>
+                            <div class="racha-info"><strong id="recTotalRecords">0</strong><span>récords batidos</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-medal"></i> Medallas</h2>
+                    <div class="logros-grid" id="logrosGrid">
+                        <div style="color:#aaa; padding:20px; text-align:center;">Cargando logros...</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-ranking-star"></i> Récords por Ejercicio</h2>
+                    <div class="records-table-wrap">
+                        <table class="records-table">
+                            <thead>
+                                <tr>
+                                    <th>Ejercicio</th>
+                                    <th>Peso máx</th>
+                                    <th>1RM est.</th>
+                                    <th>Mejor serie</th>
+                                    <th>Volumen máx</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recordsTabla">
+                                <tr><td colspan="5" style="text-align:center; color:#aaa; padding:20px;">Cargando récords...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-recomendados" class="app-section-panel">
+                <div class="card">
+                    <h2><i class="fa-solid fa-book-open"></i> Catálogo de Ejercicios (104 disponibles)</h2>
+                    <p class="subtitle">Explora el catálogo completo, filtra por grupo muscular y úsalos para crear tus plantillas propias.</p>
+
+                    <div class="catalogo-filtros">
+                        <select id="filtroGrupo" class="filtro-select" onchange="cargarCatalogo()">
+                            <option value="">Todos los grupos</option>
+                            <option value="pecho">Pecho</option>
+                            <option value="espalda">Espalda</option>
+                            <option value="pierna">Piernas</option>
+                            <option value="hombro">Hombros</option>
+                            <option value="brazo">Brazos</option>
+                            <option value="core">Core</option>
+                            <option value="gluteo">Glúteos</option>
+                        </select>
+                        <input type="text" id="busquedaEjercicio" placeholder="Buscar ejercicio..." class="filtro-busqueda" onkeyup="cargarCatalogo()">
+                    </div>
+
+                    <div class="catalogo-grid" id="catalogoGrid">
+                        <div style="color:#aaa; padding:20px; text-align:center;">Cargando catálogo...</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-actividad" class="app-section-panel">
+                <div class="card">
+                    <div class="section-actions">
+                        <h2><i class="fa-solid fa-clipboard-list"></i> Bitácora de Actividad</h2>
+                        <button type="button" class="btn-accion" onclick="cargarActividad()"><i class="fa-solid fa-rotate"></i> Actualizar</button>
+                    </div>
+                    <p class="subtitle">Registro de las acciones de los usuarios. Se guarda en <code>actividad.log</code> dentro de la carpeta de la página.</p>
+                    <div class="records-table-wrap">
+                        <table class="records-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Usuario</th>
+                                    <th>Acción</th>
+                                    <th>Detalle</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bitacoraTabla">
+                                <tr><td colspan="4" style="text-align:center; color:#aaa; padding:20px;">Cargando bitácora...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-opciones" class="app-section-panel">
+                <div class="card">
+                    <h2><i class="fa-solid fa-gears"></i> Preferencias del Panel de Control</h2>
+                    <p class="subtitle">Configura los parámetros globales de la aplicación móvil y de escritorio.</p>
+                    
+                    <div class="options-container">
+                        <div class="option-row">
+                            <div class="opt-info">
+                                <h4>Progresión por Niveles <span class="badge-nuevo">NUEVO</span></h4>
+                                <p>Al activarlo, cada vez que subas de nivel tus ejercicios aumentarán de peso automáticamente (+5% por nivel).</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="toggleProgresion" onchange="cambiarModoProgresion()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="option-row">
+                            <div class="opt-info">
+                                <h4>Tema Visual de la Interfaz</h4>
+                                <p>Alternar entre modo oscuro estándar o modo de alto contraste para entrenamientos nocturnos.</p>
+                            </div>
+                            <button type="button" class="btn-toggle-switch" onclick="toggleCyberTheme()">Modo Cyberpunk</button>
+                        </div>
+                        <div class="option-row">
+                            <div class="opt-info">
+                                <h4>Borrar Registro en Caliente</h4>
+                                <p>Limpia por completo la bitácora de ejercicios actual y restablece las analíticas de volumen a cero.</p>
+                            </div>
+                            <button type="button" class="btn-danger-action" onclick="limpiarTodoElHistorial()">Formatear Tablas</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ===== AVISOS DE RÉCORDS Y LOGROS ===== -->
+    <div id="recordsToast"></div>
+
+    <!-- ===== MODAL CUESTIONARIO INICIAL ===== -->
+    <div id="cuestionarioModal" class="modal-overlay" style="display:none;">
+        <div class="modal-card">
+            <h2><i class="fa-solid fa-user-gear"></i> Personaliza tu Perfil</h2>
+            <p class="subtitle">Estos datos ayudarán a recomendar la plantilla ideal para ti.</p>
+            <form id="cuestionarioForm" onsubmit="guardarCuestionario(event)">
+                <div class="quiz-grid">
+                    <div class="input-group">
+                        <label>Edad</label>
+                        <input type="number" id="quizEdad" min="12" max="90" placeholder="20" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Peso (kg)</label>
+                        <input type="number" id="quizPeso" min="30" max="250" placeholder="70" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Altura (cm)</label>
+                        <input type="number" id="quizAltura" min="120" max="230" placeholder="170" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Género</label>
+                        <select id="quizGenero">
+                            <option value="masculino">Masculino</option>
+                            <option value="femenino">Femenino</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Objetivo principal</label>
+                        <select id="quizObjetivo">
+                            <option value="ganar_musculo">Ganar músculo</option>
+                            <option value="perder_grasa">Perder grasa</option>
+                            <option value="fuerza">Ganar fuerza</option>
+                            <option value="definicion">Definición</option>
+                            <option value="salud">Salud general</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Nivel de experiencia</label>
+                        <select id="quizNivel">
+                            <option value="principiante">Principiante</option>
+                            <option value="intermedio">Intermedio</option>
+                            <option value="avanzado">Avanzado</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Días que entrenarás</label>
+                        <select id="quizDias">
+                            <option value="2">2 días</option>
+                            <option value="3" selected>3 días</option>
+                            <option value="4">4 días</option>
+                            <option value="5">5 días</option>
+                            <option value="6">6 días</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn-login" style="background:#2ed573; margin-top:20px; width:100%;">Guardar y Ver Plantillas <i class="fa-solid fa-arrow-right"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== MODAL PUNTO DE DESCANSO (Leap Fitness) ===== -->
+    <div id="descansoOverlay" class="descanso-overlay" style="display:none;">
+        <div class="descanso-card">
+            <div class="descanso-circulo">
+                <i class="fa-solid fa-glass-water-droplet"></i>
+            </div>
+            <h2>Descanso</h2>
+            <p class="subtitle">Hidrátate y prepárate para el siguiente ejercicio</p>
+            <p id="descansoEjercicioDone" style="color:#28b463; font-weight:bold; margin:8px 0;"></p>
+            <div class="descanso-timer" id="descansoTimer"></div>
+            <p class="subtitle" style="font-size:12px;">Serás enviado al siguiente ejercicio automáticamente en 30 minutos si no continuas.</p>
+            <button type="button" class="btn-login" style="background:#2ed573; width:100%; margin-top:15px;" onclick="continuarDespuesDescanso()"><i class="fa-solid fa-forward"></i> Continuar con el siguiente ejercicio</button>
+        </div>
+    </div>
+
+    <!-- ===== MODAL SUBIDA DE NIVEL ===== -->
+    <div id="nivelModal" class="modal-overlay" style="display:none;">
+        <div class="modal-card nivel-modal">
+            <div class="nivel-fire">🔥</div>
+            <h2 id="nivelModalTitulo">¡Subiste de Nivel!</h2>
+            <p id="nivelModalDesc" class="subtitle">Eres ahora nivel 2. Tus ejercicios serán 5% más pesados.</p>
+            <div class="nivel-medalla"><span id="nivelModalNum">2</span></div>
+            <button type="button" class="btn-login" style="background:#ffa502; margin-top:20px; width:100%;" onclick="cerrarNivelModal()">¡A seguir! <i class="fa-solid fa-bolt"></i></button>
+        </div>
+    </div>
+
+    <!-- ===== MODAL CREAR PLANTILLA ===== -->
+    <div id="crearPlantillaModal" class="modal-overlay" style="display:none;">
+        <div class="modal-card modal-ancho">
+            <h2><i class="fa-solid fa-layer-group"></i> Crear tu Plantilla</h2>
+            <p class="subtitle">Ponle nombre y agrega ejercicios desde el catálogo.</p>
+            <div class="input-group" style="margin-bottom:10px;">
+                <label>Nombre de la plantilla</label>
+                <input type="text" id="nuevaPlantillaNombre" placeholder="Ej. Mi rutina de pecho">
+            </div>
+            <div class="input-group" style="margin-bottom:10px;">
+                <label>Tipo</label>
+                <select id="nuevaPlantillaTipo">
+                    <option value="gym_full">Full Body</option>
+                    <option value="fuerza">Fuerza</option>
+                    <option value="hipertrofia">Hipertrofia</option>
+                    <option value="perdida_grasa">Pérdida de grasa</option>
+                    <option value="definicion">Definición</option>
+                </select>
+            </div>
+            <div class="input-group" style="margin-bottom:10px;">
+                <label>Días por semana</label>
+                <select id="nuevaPlantillaDias">
+                    <option value="2">2</option><option value="3" selected>3</option>
+                    <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+                </select>
+            </div>
+            <div class="creador-search">
+                <input type="text" id="busquedaCrearPlantilla" placeholder="Buscar ejercicio del catálogo..." onkeyup="filtrarCatalogoCreador(event)">
+            </div>
+            <div class="creador-ejercicios" id="creadorListaCatalogo" style="max-height:250px; overflow-y:auto; margin:10px 0;"></div>
+            <div class="creador-seleccionados" id="creadorSeleccionados" style="margin-top:10px;">
+                <p class="subtitle">Ejercicios seleccionados: <span id="contadorSeleccionados">0</span></p>
+            </div>
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button type="button" class="btn-login" style="flex:2;" onclick="guardarNuevaPlantilla()"><i class="fa-solid fa-check"></i> Guardar Plantilla</button>
+                <button type="button" class="btn-timer-reset" style="flex:1;" onclick="cerrarCreadorPlantilla()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js?v=20260922-3"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+-- =============================================
+-- CATÁLOGO DE 100 EJERCICIOS DE PESAS CON FOTO
+-- =============================================
+
+INSERT INTO ejercicios_catalogo (nombre, grupo_muscular, subgrupo, equipo, dificultad, descripcion, foto_url) VALUES
+-- ===== PECHO (18) =====
+('Press de Banca con Barra', 'pecho', 'empuje', 'barra_banco', 'intermedio', 'Sujeta la barra con agarre prono más ancho que hombros. Baja rozando el pecho y empuja con potencia.', 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=500'),
+('Press de Banca Inclinado', 'pecho', 'empuje', 'barra_banco', 'intermedio', 'En banco a 30-45 grados, dirige la barra a la parte alta del pecho.', 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=500'),
+('Press de Banca Declinado', 'pecho', 'empuje', 'barra_banco', 'avanzado', 'En banco declinado para enfocar el pectoral inferior.', 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=500'),
+('Press de Banca con Mancuernas', 'pecho', 'empuje', 'mancuernas_banco', 'intermedio', 'Con mancuernas en banco plano, empuja hacia arriba manteniendo control.', 'https://images.unsplash.com/photo-1544033527-b192daee1f5b?q=80&w=500'),
+('Press Inclinado con Mancuernas', 'pecho', 'empuje', 'mancuernas_banco', 'intermedio', 'Mancuernas en banco inclinado, enfocando la parte superior del pecho.', 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=500'),
+('Aperturas con Mancuernas', 'pecho', 'aislamiento', 'mancuernas_banco', 'principiante', 'Acostado en banco, abre los brazos en semicírculo con leve flexión de codos.', 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=500'),
+('Aperturas en Polea (Cruces)', 'pecho', 'aislamiento', 'poleas', 'intermedio', 'De pie entre poleas, junta las manos frente al pecho concentrando la contracción.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Press en Máquina', 'pecho', 'empuje', 'maquina', 'principiante', 'Con máquina de pecho, empuja el asidero hacia adelante con movimiento guiado.', 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=500'),
+('Flexiones de Banca', 'pecho', 'empuje', 'peso_corporal', 'principiante', 'Flexiones con manos apoyadas en banco para variar el ángulo del pecho.', 'https://images.unsplash.com/photo-1599058917765-a780eda07a3e?q=80&w=500'),
+('Dips en Paralelas', 'pecho', 'empuje', 'paralelas', 'avanzado', 'Inclina el torso hacia adelante para enfocar el pectoral. Baja hasta que los codos formen 90 grados.', 'https://images.unsplash.com/photo-1517964608605-6e7ef3d31752?q=80&w=500'),
+('Pullover con Mancuerna', 'pecho', 'tirón', 'mancuerna', 'intermedio', 'Acostado, lleva la mancuerna por detrás de la cabeza estirando el pecho.', 'https://images.unsplash.com/photo-1584466977773-e625c37cdd50?q=80&w=500'),
+('Press Banca Jalón con Barra', 'pecho', 'empuje', 'barra_banco', 'intermedio', 'Variación del press banca con agarre cerrado.', 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=500'),
+('Press Banca con Agarre Cerrado', 'pecho', 'empuje', 'barra_banco', 'intermedio', 'Barra con agarre a la anchura de hombros, activa tríceps y pecho interno.', 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=500'),
+('Aperturas en Banco Inclinado', 'pecho', 'aislamiento', 'mancuernas_banco', 'intermedio', 'Aperturas sobre banco inclinado con mancuernas.', 'https://images.unsplash.com/photo-1550259979-ed79b48d2a30?q=80&w=500'),
+('Contractor de Pecho Sentado', 'pecho', 'aislamiento', 'maquina', 'principiante', 'Máquina sentado para contraer el pecho de forma guiada.', 'https://images.unsplash.com/photo-1544033527-b192daee1f5b?q=80&w=500'),
+('Press de Piso', 'pecho', 'empuje', 'barra', 'intermedio', 'Acostado en el suelo, realiza press de banca corto protegiendo los hombros.', 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=500'),
+('Flexiones Diamante', 'pecho', 'empuje', 'peso_corporal', 'principiante', 'Flexiones con manos juntas formando un triángulo, enfatizan pecho interno.', 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?q=80&w=500'),
+('Press Arnés con Barra', 'pecho', 'empuje', 'barra', 'avanzado', 'Press con barra guiada por arnés para máxima estabilidad.', 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=500'),
+
+-- ===== ESPALDA (18) =====
+('Dominadas con Agarre Prono', 'espalda', 'tirón', 'barra', 'avanzado', 'Cuélgate de la barra con agarre amplio y sube hasta pasar la barbilla.', 'https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?q=80&w=500'),
+('Dominadas Supinas', 'espalda', 'tirón', 'barra', 'avanzado', 'Agarre supino (palmas hacia ti), mayor activación de bíceps.', 'https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?q=80&w=500'),
+('Remo con Barra', 'espalda', 'tirón', 'barra', 'intermedio', 'Inclina el torso, arrastra la barra hacia el ombligo llevando codos atrás.', 'https://images.unsplash.com/photo-1434682881908-b43d0467b798?q=80&w=500'),
+('Remo Pendlay', 'espalda', 'tirón', 'barra', 'avanzado', 'Remo con torso paralelo al suelo, toque de barra en el suelo entre repeticiones.', 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=500'),
+('Remo con Mancuerna', 'espalda', 'tirón', 'mancuerna', 'principiante', 'Apoya rodilla y mano en banco, sube la mancuerna llevando el codo hacia atrás.', 'https://images.unsplash.com/photo-1434682881908-b43d0467b798?q=80&w=500'),
+('Jalón al Pecho (Pulldown)', 'espalda', 'tirón', 'polea', 'principiante', 'Tira de la barra de la polea alta hacia tu pecho llevando codos hacia abajo.', 'https://images.unsplash.com/photo-1532386236358-a33d8a9434e3?q=80&w=500'),
+('Jalón Tras Nuca', 'espalda', 'tirón', 'polea', 'avanzado', 'Lleva la barra por detrás de la cabeza hacia los trapecios.', 'https://images.unsplash.com/photo-1532386236358-a33d8a9434e3?q=80&w=500'),
+('Remo en Máquina', 'espalda', 'tirón', 'maquina', 'principiante', 'Remo sentado en máquina con agarre guiado, ideal para aprender.', 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=500'),
+('Peso Muerto', 'espalda', 'tirón', 'barra', 'avanzado', 'Levanta la barra desde el suelo con espalda neutra, empujando con piernas.', 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=500'),
+('Remo T con Barra', 'espalda', 'tirón', 'barra', 'intermedio', 'Apoya el pecho en banco, levanta la barra con T agarre hacia el pecho.', 'https://images.unsplash.com/photo-1584466977773-e625c37cdd50?q=80&w=500'),
+('Pullover en Polea', 'espalda', 'tirón', 'polea', 'intermedio', 'Con polea alta, lleva el brazo extendido hacia abajo en arco.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Encogimientos con Barra', 'espalda', 'tirón', 'barra', 'principiante', 'Con barra en manos, eleva los hombros hacia las orejas.', 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=500'),
+('Remo Invertido (Australian Pull)', 'espalda', 'tirón', 'barra', 'intermedio', 'Suspéndete bajo la barra y rema hacia ella manteniendo el cuerpo plano.', 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=500'),
+('Hiperextensiones', 'espalda', 'extensión', 'banco', 'principiante', 'En banco de hiperextensión, sube el torso llevando espalda neutra.', 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=500'),
+('Remo Sentado con Polea', 'espalda', 'tirón', 'polea', 'principiante', 'Sentado con piernas fijas, tira del mango hacia el abdomen.', 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=500'),
+('Dominadas Lastradas', 'espalda', 'tirón', 'barra', 'avanzado', 'Dominadas con peso adicional colgado del cinturón.', 'https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?q=80&w=500'),
+('Rack Pulls', 'espalda', 'tirón', 'barra', 'avanzado', 'Peso muerto desde la altura de las rodillas para mayor carga.', 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=500'),
+('Remo con Discos Apilados', 'espalda', 'tirón', 'barra', 'intermedio', 'Variación de remo con barra usando discos para elevar el rango de movimiento.', 'https://images.unsplash.com/photo-1434682881908-b43d0467b798?q=80&w=500'),
+
+-- ===== PIERNAS (22) =====
+('Sentadilla Trasera con Barra', 'pierna', 'cuádriceps', 'barra', 'intermedio', 'Barra sobre trapecios, baja rompiendo 90 grados y empuja el suelo.', 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=500'),
+('Sentadilla Frontal', 'pierna', 'cuádriceps', 'barra', 'avanzado', 'Barra sobre deltoides anteriores, torso erguido, mayor activación de cuádriceps.', 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=500'),
+('Sentadilla con Mancuernas', 'pierna', 'cuádriceps', 'mancuernas', 'principiante', 'Mancuernas a los lados del cuerpo, sentadilla controlada.', 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=500'),
+('Prensa de Piernas (Leg Press)', 'pierna', 'cuádriceps', 'maquina', 'principiante', 'En máquina, empuja la plataforma sin bloquear rodillas al final.', 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=500'),
+('Sentadilla Búlgara', 'pierna', 'cuádriceps', 'mancuerna', 'avanzado', 'Zancada con pierna trasera elevada sobre banco, trabajo unilateral.', 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=500'),
+('Zancadas con Barra', 'pierna', 'cuádriceps', 'barra', 'intermedio', 'Barra en trapecios, alterna zancadas hacia adelante.', 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=500'),
+('Zancadas con Mancuernas', 'pierna', 'cuádriceps', 'mancuernas', 'principiante', 'Mancuernas colgando, zancadas alternadas con control.', 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=500'),
+('Peso Muerto Rumano', 'pierna', 'femoral', 'barra', 'intermedio', 'Glúteos hacia atrás, barra pegada a la pierna, estirando isquios.', 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=500'),
+('Curl Femoral Acostado', 'pierna', 'isquiotibiales', 'maquina', 'principiante', 'Acostado en máquina, flexiona la pierna llevando el talón al glúteo.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Curl Femoral Sentado', 'pierna', 'isquiotibiales', 'maquina', 'principiante', 'Sentado, presiona la almohadilla flexionando la rodilla.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Extensión de Cuádriceps', 'pierna', 'cuádriceps', 'maquina', 'principiante', 'Sentado, extiende las piernas contra la resistencia.', 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=500'),
+('Press de Piernas Inclinado', 'pierna', 'cuádriceps', 'maquina', 'principiante', 'Prensa con respaldo inclinado, mayor recorrido para cuádriceps.', 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=500'),
+('Sentadilla Goblet', 'pierna', 'cuádriceps', 'mancuerna', 'principiante', 'Mancuerna sostenida frente al pecho, sentadilla profunda.', 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=500'),
+('Hack Squat', 'pierna', 'cuádriceps', 'maquina', 'intermedio', 'Máquina hack squat, espalda al respaldo deslizante.', 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=500'),
+('Peso Muerto Convencional', 'pierna', 'cadena posterior', 'barra', 'avanzado', 'Levanta la barra desde el suelo con cadena posterior.', 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=500'),
+('Elevación de Gemelos de Pie', 'pierna', 'gemelos', 'maquina', 'principiante', 'De pie en prensa de gemelos, eleva los talones al máximo.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Elevación de Gemelos Sentado', 'pierna', 'gemelos', 'maquina', 'principiante', 'Sentado con lastre en rodillas, sube y baja los talones.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Peso Muerto Sumo', 'pierna', 'cadena posterior', 'barra', 'avanzado', 'Agarre amplio, pies abiertos, enfoca el interior de los muslos.', 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=500'),
+('Pumper con Barra', 'pierna', 'cuádriceps', 'barra', 'intermedio', 'Peso muerto rumano con barra enfatizando la salida con piernas.', 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=500'),
+('Sissy Squat', 'pierna', 'cuádriceps', 'peso_corporal', 'avanzado', 'Sentadilla con torso inclinado hacia atrás, manos en soporte.', 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=500'),
+('Step Ups con Mancuernas', 'pierna', 'cuádriceps', 'mancuernas', 'principiante', 'Sube a un cajón alternando piernas con mancuernas.', 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=500'),
+('Curl Femoral Nórdico', 'pierna', 'isquiotibiales', 'peso_corporal', 'avanzado', 'Frena la caída del torso con los isquios contra resistencia.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+
+-- ===== HOMBROS (14) =====
+('Press Militar con Barra', 'hombro', 'empuje', 'barra', 'intermedio', 'De pie, sube la barra desde los hombros hasta extender los brazos.', 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=500'),
+('Press Militar con Mancuernas', 'hombro', 'empuje', 'mancuernas', 'intermedio', 'Mancuernas desde la altura de las orejas hasta arriba.', 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=500'),
+('Press Arnold', 'hombro', 'empuje', 'mancuernas', 'avanzado', 'Rotación de muñecas mientras subes las mancuernas.', 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=500'),
+('Press en Máquina de Hombros', 'hombro', 'empuje', 'maquina', 'principiante', 'Press sentado en máquina, movimiento guiado.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Elevaciones Laterales', 'hombro', 'aislamiento', 'mancuernas', 'principiante', 'Lleva las mancuernas a los lados hasta la altura del hombro.', 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=500'),
+('Elevaciones Frontales', 'hombro', 'aislamiento', 'mancuernas', 'principiante', 'Sube las mancuernas hacia adelante hasta la altura del hombro.', 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=500'),
+('Pájaros (Face Pull)', 'hombro', 'tirón', 'polea', 'intermedio', 'Con polea alta, lleva el cable hacia tu cara abriendo codos.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Encogimiento de Hombros', 'hombro', 'trapecio', 'mancuernas', 'principiante', 'Cuelga las mancuernas y encoge los hombros hacia arriba.', 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=500'),
+('Press de Hombros Sentado', 'hombro', 'empuje', 'mancuernas', 'intermedio', 'Sentado con respaldo, press con mancuernas sobre la cabeza.', 'https://images.unsplash.com/photo-1544033527-b192daee1f5b?q=80&w=500'),
+('Elevación Posterior en Máquina', 'hombro', 'aislamiento', 'maquina', 'intermedio', 'Máquina de hombro posterior, abre los brazos hacia atrás.', 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=500'),
+('Levantamiento de Disco sobre Cabeza', 'hombro', 'empuje', 'disco', 'principiante', 'Sostén un disco frente a ti y levántalo sobre la cabeza.', 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=500'),
+('Press de Empuje con Barra', 'hombro', 'empuje', 'barra', 'avanzado', 'Impulso con piernas para llevar la barra sobre la cabeza.', 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=500'),
+('Pájaros con Mancuernas Inclinado', 'hombro', 'aislamiento', 'mancuernas', 'intermedio', 'Torso inclinado, abre los brazos hacia los lados.', 'https://images.unsplash.com/photo-1544033527-b192daee1f5b?q=80&w=500'),
+('Rotación de Hombros con Cable', 'hombro', 'rotación', 'polea', 'principiante', 'Rotación externa de hombros con cable para prehabilitación.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+
+-- ===== BÍCEPS (10) =====
+('Curl de Bíceps con Barra', 'brazo', 'bíceps', 'barra', 'principiante', 'Barra, codos fijos, sube la barra llevando los bíceps al máximo.', 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=500'),
+('Curl de Bíceps con Barra Z', 'brazo', 'bíceps', 'barra_z', 'principiante', 'Con barra Z en la zona corrugada, mayor comodidad en muñecas.', 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=500'),
+('Curl con Mancuernas', 'brazo', 'bíceps', 'mancuernas', 'principiante', 'Alterna o simultáneo, sube las mancuernas sin balancear.', 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=500'),
+('Curl Martillo', 'brazo', 'bíceps', 'mancuernas', 'principiante', 'Agarre neutro (palmas hacia dentro), enfatiza el braquial.', 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=500'),
+('Curl Inclinado', 'brazo', 'bíceps', 'mancuernas_banco', 'intermedio', 'En banco inclinado, estira completamente el bíceps al bajar.', 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=500'),
+('Curl con Polea', 'brazo', 'bíceps', 'polea', 'principiante', 'Polea baja, curl con tensión constante durante el movimiento.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Curl Concentrado', 'brazo', 'bíceps', 'mancuerna', 'principiante', 'Sentado con codo apoyado en el muslo, curl aislado.', 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=500'),
+('Curl Predicador', 'brazo', 'bíceps', 'banco_predicador', 'intermedio', 'Brazo apoyado en banco predicador, curl estricto.', 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=500'),
+('Curl Araña', 'brazo', 'bíceps', 'mancuernas_banco', 'intermedio', 'Acostado boca abajo en banco inclinado, curl con amplitud.', 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=500'),
+('Curl Zottman', 'brazo', 'bíceps', 'mancuernas', 'intermedio', 'Supina al subir y prono al bajar, trabaja ambos músculos del brazo.', 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=500'),
+
+-- ===== TRÍCEPS (10) =====
+('Fondos en Banco', 'brazo', 'tríceps', 'banco', 'principiante', 'Manos atrás en banco, baja el cuerpo flexionando codos.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Press Francés con Barra', 'brazo', 'tríceps', 'barra', 'intermedio', 'Acostado, barra a frente, flexiona codos hacia la cabeza.', 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=500'),
+('Extensión de Tríceps con Polea', 'brazo', 'tríceps', 'polea', 'principiante', 'De pie, empuja el cable hacia abajo bloqueando codos.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Extensión con Mancuerna (Skull Crusher)', 'brazo', 'tríceps', 'mancuernas_banco', 'intermedio', 'Acostado, mancuernas sobre la frente bajando tras la cabeza.', 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=500'),
+('Patada de Tríceps', 'brazo', 'tríceps', 'mancuernas', 'principiante', 'Torso inclinado, codo fijo, extiende el brazo hacia atrás.', 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=500'),
+('Extensión Tríceps con Soga', 'brazo', 'tríceps', 'polea', 'intermedio', 'Con cuerda, separa las manos al final del movimiento.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Press Banca Agarre Cerrado', 'brazo', 'tríceps', 'barra_banco', 'intermedio', 'Agarre cerrado, enfatiza la extensión del codo.', 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=500'),
+('Dips de Tríceps en Paralelas', 'brazo', 'tríceps', 'paralelas', 'avanzado', 'Torso erguido, baja y sube extendiendo los codos.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Extensión Francesa Unilateral', 'brazo', 'tríceps', 'mancuerna', 'intermedio', 'Una mancuerna atrás de la cabeza, extiende el codo.', 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=500'),
+('Flexión de Tríceps con Cuerda', 'brazo', 'tríceps', 'polea', 'intermedio', 'Polea con cuerda, extensiones de tríceps con apertura final.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+
+-- ===== CORE (10) =====
+('Plancha Frontal', 'core', 'abdominales', 'peso_corporal', 'principiante', 'Mantén el cuerpo recto apoyado en antebrazos y puntas de pies.', 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=500'),
+('Crunch Abdominal', 'core', 'abdominales', 'peso_corporal', 'principiante', 'Acostado, sube el torso llevando las costillas al pubis.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Elevación de Piernas', 'core', 'abdominales', 'peso_corporal', 'intermedio', 'Colgado o acostado, sube las piernas rectas.', 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=500'),
+('Rueda Abdominal', 'core', 'abdominales', 'rueda', 'avanzado', 'Desde rodillas o de pie, estira el core con la rueda.', 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=500'),
+('Plancha Lateral', 'core', 'oblicuos', 'peso_corporal', 'principiante', 'Apoyo en un antebrazo, cuerpo en línea recta de lado.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Abdominales en Máquina', 'core', 'abdominales', 'maquina', 'principiante', 'Máquina de crunch con peso guiado.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Rotaciones Rusas', 'core', 'oblicuos', 'disco', 'intermedio', 'Sentado, rota el torso llevando peso de lado a lado.', 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=500'),
+('Elevación de Rodillas Colgado', 'core', 'abdominales', 'barra', 'intermedio', 'Colgado de la barra, sube las rodillas al pecho.', 'https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?q=80&w=500'),
+('Tijeras Abdominales', 'core', 'abdominales', 'peso_corporal', 'intermedio', 'Acostado, cruza las piernas alternadas en el aire.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Abdominales Crunch con Polea', 'core', 'abdominales', 'polea', 'intermedio', 'De rodillas frente a polea, crunch con cable.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+
+-- ===== POSTERIOR CADERA / GLÚTEOS (2) =====
+('Hip Thrust con Barra', 'gluteo', 'glúteos', 'barra', 'intermedio', 'Espalda alta en banco, empuja la cadera hacia arriba con barra.', 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=500'),
+('Puente de Glúteos con Mancuerna', 'gluteo', 'glúteos', 'mancuerna', 'principiante', 'Acostado, cadera arriba con mancuerna en el abdomen.', 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=500');
+
+-- Verificar el total (debe ser 104)
+SELECT COUNT(*) AS total_ejercicios, grupo_muscular FROM ejercicios_catalogo GROUP BY grupo_muscular ORDER BY grupo_muscular;

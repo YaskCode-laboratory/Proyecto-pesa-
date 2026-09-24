@@ -1,0 +1,60 @@
+@startuml
+' ============================================================
+' DIAGRAMA DE SECUENCIA - Login de usuario (flujo principal)
+' Basado en el codigo real: script.js / api/auth.php / AuthDAO / BitacoraDAO
+' ============================================================
+
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 160
+actor Usuario as U
+participant "FrontendApp\n(script.js)" as FE
+participant "auth.php\n(action=login)" as API
+participant ":AuthDAO" as ADAO
+participant ":BitacoraDAO" as BDAO
+database "PostgreSQL\n(pesas)" as DB
+participant "sesiones" as S
+
+U -> FE : Ingresa email y contraseña
+activate FE
+
+FE -> FE : stgGet('token') / validarSesion()
+activate FE
+FE --> U : Pantalla de login (si no hay sesión)
+deactivate FE
+
+U -> FE : Click en "Iniciar sesión"
+FE -> FE : manejarIngreso(email, password)
+
+FE -> API : POST auth.php\n{action: 'login', email, password}
+activate API
+
+API -> ADAO : buscarPorEmail(email)
+activate ADAO
+ADao -> DB : SELECT id, password, nombre\nFROM usuarios WHERE email = ?
+DB --> ADAO : fila (o null)
+ADao --> API : ?array
+deactivate ADAO
+
+alt credenciales válidas (password_verify)
+  API -> ADAO : crearSesion(usuarioId, token, expires)
+  activate ADAO
+  ADAO -> DB : INSERT INTO sesiones\n(usuario_id, token, expires_at)
+  DB --> ADAO : OK
+  deactivate ADAO
+
+  API -> BDAO : registrar(uid, 'LOGIN', 'Inicio de sesión')
+  activate BDAO
+  BDAO -> BDAO : escribir(): linea en\nlogs/actividad.log
+  deactivate BDAO
+
+  API --> FE : {success: true, token, userId, nombre}
+  FE -> FE : stgSet('token', token)\nstgSet('tokenGuardadoEn', now)
+  FE --> U : Muestra pantalla principal
+else credenciales incorrectas
+  API --> FE : HTTP 401 {error: 'Credenciales incorrectas'}
+  FE --> U : Mensaje de error en el login
+end
+
+deactivate API
+
+@enduml

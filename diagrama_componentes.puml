@@ -1,0 +1,89 @@
+@startuml
+' ============================================================
+' DIAGRAMA DE COMPONENTES - Plataforma de Entrenamiento
+' ============================================================
+
+skinparam componentStyle uml2
+
+package "Cliente (Navegador)" {
+    [index.html] as HTML
+    [styles.css] as CSS
+    [script.js] as JS
+    [Chart.js (CDN)] as CHART
+
+    HTML -- CSS
+    HTML -- JS
+    JS -- CHART : "renderiza gráficas"
+}
+
+package "Servidor PHP (127.0.0.1:8000)" {
+    [api/auth.php] as A_AUTH
+    [api/perfil.php] as A_PERFIL
+    [api/agregar_ejercicio.php] as A_EJERC
+    [api/plantillas.php] as A_PLANT
+    [api/sesiones.php] as A_SES
+    [api/records.php] as A_REC
+    [api/bitacora.php] as A_BIT
+    [api/diagnostico.php] as A_DIAG
+    [api/cors.php] as CORS
+
+    package "DAO (dao/)" {
+        [AuthDAO] as DAO_AUTH
+        [UsuarioDAO] as DAO_USER
+        [EjercicioDAO] as DAO_EJ
+        [PlantillaDAO] as DAO_PL
+        [SesionEntrenamientoDAO] as DAO_SES
+        [RecordDAO] as DAO_REC
+        [LogroDAO] as DAO_LOG
+        [BitacoraDAO] as DAO_BIT
+        [Conexion] as DAO_CON
+    }
+
+    package "Almacenamiento" {
+        database "PostgreSQL :5432\n(db: pesas)" as PG
+        file "logs/actividad.log" as LOGFILE
+    }
+
+    A_AUTH ..> DAO_AUTH
+    A_AUTH ..> DAO_BIT
+    A_PERFIL ..> DAO_USER
+    A_EJERC ..> DAO_EJ
+    A_PLANT ..> DAO_PL
+    A_SES ..> DAO_USER
+    A_SES ..> DAO_PL
+    A_SES ..> DAO_EJ
+    A_SES ..> DAO_REC
+    A_SES ..> DAO_LOG
+    A_SES ..> DAO_BIT
+    A_REC ..> DAO_REC
+    A_BIT ..> DAO_BIT
+
+    DAO_AUTH ..> DAO_CON : <<use>>
+    DAO_USER ..> DAO_CON : <<use>>
+    DAO_EJ ..> DAO_CON : <<use>>
+    DAO_PL ..> DAO_CON : <<use>>
+    DAO_SES ..> DAO_CON : <<use>>
+    DAO_REC ..> DAO_CON : <<use>>
+    DAO_LOG ..> DAO_CON : <<use>>
+
+    DAO_CON ..> PG : PDO
+    DAO_BIT ..> LOGFILE : file_put_contents / file
+}
+
+JS -down-> A_AUTH : "fetch() JSON + token (HTTP)"
+JS -down-> A_PERFIL
+JS -down-> A_EJERC
+JS -down-> A_PLANT
+JS -down-> A_SES
+JS -down-> A_REC
+JS -down-> A_BIT
+
+CORS ..> A_AUTH : "headers CORS"
+CORS ..> A_PERFIL
+CORS ..> A_EJERC
+CORS ..> A_PLANT
+CORS ..> A_SES
+CORS ..> A_REC
+CORS ..> A_BIT
+
+@enduml

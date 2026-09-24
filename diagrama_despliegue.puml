@@ -1,0 +1,45 @@
+@startuml
+' ============================================================
+' DIAGRAMA DE DESPLIEGUE - Plataforma de Entrenamiento
+' ============================================================
+
+skinparam nodeStyle rectangle
+skinparam databaseStyle cylinder
+
+node "Cliente\n(Navegador Web - Chrome/Edge)" as N_CLI {
+    artifact "index.html" as A_HTML
+    artifact "styles.css" as A_CSS
+    artifact "script.js" as A_JS
+    artifact "Chart.js (CDN)" as A_CHART
+}
+
+node "Equipo Local: VS Code + Live Server\n(127.0.0.1:5500)" as N_LIVE {
+    artifact "Carpeta servida\n'pagina web/'" as A_FOLDER
+}
+
+node "Equipo Local: Servidor PHP\n(php.exe -S 127.0.0.1:8000)" as N_PHP {
+    artifact "api/*.php (endpoints)" as A_API
+    artifact "dao/*.php (DAOs)" as A_DAO
+}
+
+node "Servidor de Base de Datos\n(PostgreSQL - localhost:5432)" as N_PG {
+    database "DB: pesas\n(usuarios, sesiones,\nejercicios, historial,\nplantillas, sesiones_entrenamiento,\npassword_resets)" as DB_PESAS
+}
+
+artifact "Archivo plano\nlogs/actividad.log" as A_LOG
+
+' Conexiones
+N_CLI -down-> N_LIVE : "HTTP :5500\n(sirve index.html, script.js, styles.css)"
+N_CLI -down-> N_PHP : "HTTP :8000\nfetch() JSON {action, token} (CORS)"
+
+N_PHP --> N_PG : "PDO PostgreSQL\n(localhost:5432, db=pesas)"
+N_PHP --> A_LOG : "file_put_contents / file\n(logs/actividad.log, fuera de la carpeta vigilada)"
+
+' Nota
+note right of A_LOG
+  Movido fuera de 'pagina web/' para que
+  Live Server no recargue la página al
+  escribir el log (soluciona el cierre de sesión).
+end note
+
+@enduml
