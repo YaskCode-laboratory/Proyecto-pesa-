@@ -5,3 +5,8 @@ __pycache__/
 # Diagramas UML (no se suben al repositorio)
 diagrama_*.puml
 diagrama_*.png
+
+# Credenciales locales (NUNCA subir al repositorio)
+.env
+*.env
+api/config.local.php

@@ -44,13 +44,38 @@ def cors_de_marcado():
 
 # ============================================================
 # Configuración de la base de datos
+# Credenciales leídas del archivo .env (raíz del proyecto, NO se
+# sube a git). Las variables de entorno tienen prioridad.
 # ============================================================
+def _cargar_env():
+    """Carga las variables del archivo .env (raíz del proyecto) en un dict."""
+    env = {}
+    ruta = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env')
+    if os.path.exists(ruta):
+        with open(ruta, encoding='utf-8') as f:
+            for linea in f:
+                linea = linea.strip()
+                if not linea or linea.startswith('#') or '=' not in linea:
+                    continue
+                clave, valor = linea.split('=', 1)
+                env[clave.strip()] = valor.strip()
+    return env
+
+def _var_env(nombre, por_defecto=''):
+    """Variable de entorno del sistema con prioridad sobre .env."""
+    valor = os.environ.get(nombre)
+    if valor is not None and valor != '':
+        return valor
+    return _env.get(nombre, por_defecto)
+
+_env = _cargar_env()
+
 DB_CONFIG = {
-    'host': 'localhost',
-    'port': 5432,
-    'dbname': 'pesas',
-    'user': 'postgres',
-    'password': 'REDACTED_CREDENTIAL'
+    'host': _var_env('DB_HOST', 'localhost'),
+    'port': int(_var_env('DB_PORT', '5432')),
+    'dbname': _var_env('DB_NAME', 'pesas'),
+    'user': _var_env('DB_USER', 'postgres'),
+    'password': _var_env('DB_PASS', '')
 }
 
 def get_db():
