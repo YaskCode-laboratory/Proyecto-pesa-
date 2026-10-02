@@ -20,12 +20,6 @@ app = Flask(__name__)
 
 DATE_FORMAT = '%Y-%m-%d'
 
-# Modelo de IA a usar con Gemini (free tier de Google AI Studio)
-GEMINI_MODEL = os.environ.get('GEMINI_MODEL', 'gemini-2.0-flash')
-OLLAMA_MODEL = os.environ.get('OLLAMA_MODEL', 'llama3.2')
-OLLAMA_URL = os.environ.get('OLLAMA_URL', 'http://127.0.0.1:11434')
-GEMINI_KEY = os.environ.get('GEMINI_API_KEY', '')
-
 # ============================================================
 # CORS (permite que el frontend en Live Server llame al microservicio)
 # ============================================================
@@ -70,6 +64,13 @@ def _var_env(nombre, por_defecto=''):
 
 _env = _cargar_env()
 
+# Configuración de IA: leída del mismo .env (o variable de entorno).
+# GEMINI_API_KEY: genera gratis en https://aistudio.google.com/apikey
+GEMINI_MODEL = _var_env('GEMINI_MODEL', 'gemini-3.8-flash')
+OLLAMA_MODEL = _var_env('OLLAMA_MODEL', 'llama3.2')
+OLLAMA_URL = _var_env('OLLAMA_URL', 'http://127.0.0.1:11434')
+GEMINI_KEY = _var_env('GEMINI_API_KEY', '')
+
 DB_CONFIG = {
     'host': _var_env('DB_HOST', 'localhost'),
     'port': int(_var_env('DB_PORT', '5432')),
@@ -92,12 +93,17 @@ def _sin_tildes(texto):
     return sin_acento.replace('ñ', 'n')
 
 
-BITACORA_LOG = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'actividad.log')
+BITACORA_LOG = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'logs', 'actividad.log')
 
 
 def escribir_bitacora(uid, accion, detalle=''):
-    """Append de una línea al log de actividad de la página (actividad.log)."""
+    """Append de una línea al log de actividad de la página (logs/actividad.log).
+
+    Misma ruta que usa BitacoraDAO en PHP: fuera de 'pagina web' para no
+    provocar recargas del editor (Live Server/observadores de archivos).
+    """
     try:
+        os.makedirs(os.path.dirname(BITACORA_LOG), exist_ok=True)
         with open(BITACORA_LOG, 'a', encoding='utf-8') as f:
             f.write('{} | U{} | | {} | {}\n'.format(
                 datetime.now().strftime('%Y-%m-%d %H:%M:%S'), uid, accion, str(detalle).replace('\n', ' ').replace('\r', ' ')

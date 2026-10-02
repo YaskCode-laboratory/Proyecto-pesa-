@@ -67,17 +67,55 @@ button:active,
 body.cyberpunk-mode {
     background-color: #05050d;
     color: #00ffcc;
+    --color-primary: #00ffcc;
+    --color-primary-rgb: 0, 255, 204;
+    --color-secondary: #ff00ff;
+    --color-accent: #ff1177;
+    --color-bg-card: #0d0d21;
+    --color-border: rgba(0, 255, 204, 0.35);
 }
 body.cyberpunk-mode .card {
     background: #0d0d21;
     border: 1px solid #00ffcc;
     box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
 }
-body.cyberpunk-mode .btn-login, 
-body.cyberpunk-mode .btn-add-exercise {
+body.cyberpunk-mode .sidebar,
+body.cyberpunk-mode .menu-item,
+body.cyberpunk-mode .topbar {
+    background: #0a0a18;
+    border-color: #00ffcc;
+}
+body.cyberpunk-mode .menu-item:hover,
+body.cyberpunk-mode .menu-item.active {
+    background: rgba(0, 255, 204, 0.12);
+    color: #00ffcc;
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.3);
+}
+body.cyberpunk-mode .btn-login,
+body.cyberpunk-mode .btn-add-exercise,
+body.cyberpunk-mode .btn-accion {
     background: #00ffcc;
     color: #05050d;
+    border-color: #00ffcc;
     box-shadow: 0 0 8px #00ffcc;
+}
+body.cyberpunk-mode .btn-toggle-switch,
+body.cyberpunk-mode .btn-danger-action {
+    background: rgba(255, 0, 255, 0.15);
+    color: #ff00ff;
+    border-color: #ff00ff;
+    box-shadow: 0 0 8px rgba(255, 0, 255, 0.3);
+}
+body.cyberpunk-mode .input-wrapper,
+body.cyberpunk-mode .login-card,
+body.cyberpunk-mode .modal-card,
+body.cyberpunk-mode .catalogo-card,
+body.cyberpunk-mode .tab-btn.active {
+    background: #0d0d21;
+    border-color: #00ffcc;
+}
+body.cyberpunk-mode .progress-fill {
+    background: linear-gradient(90deg, #00ffcc, #ff00ff);
 }
 
 /* =========================================================================
@@ -294,6 +332,8 @@ body.cyberpunk-mode .btn-add-exercise {
     left: 0;
     bottom: 0;
     z-index: 150;
+    display: flex;
+    flex-direction: column;
     border-right: 1px solid rgba(255,255,255,0.05);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Animación suave de barrido */
 }
@@ -306,6 +346,12 @@ body.cyberpunk-mode .btn-add-exercise {
 .menu-list {
     list-style: none;
     padding: 20px 15px;
+    flex: 1;
+}
+
+.menu-salir {
+    padding: 10px 15px;
+    border-top: 1px solid rgba(255,255,255,0.07);
 }
 
 .menu-item {

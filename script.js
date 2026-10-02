@@ -93,6 +93,8 @@ async function validarSesion() {
 
         if (data.success) {
             usuarioLogueado = { nombre: data.nombre, id: data.id };
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appScreen').style.display = 'flex';
             document.getElementById('saludoUsuario').textContent = `| @${data.nombre}`;
             cargarHistorial();
             verificarCuestionario();
@@ -213,6 +215,33 @@ async function manejarIngreso(event) {
         errorTxt.textContent = 'Error de conexión';
         errorBox.style.display = 'block';
     }
+}
+
+/* --------------------------------------------------------------
+   CERRAR SESIÓN / CAMBIAR DE CUENTA
+-------------------------------------------------------------- */
+async function cerrarSesion(event) {
+    if (event) event.preventDefault();
+    if (!confirm('¿Cerrar la sesión actual?')) return;
+
+    const token = stgGet('token');
+    try {
+        await fetch(`${API_BASE}auth.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'logout', token })
+        });
+    } catch (e) { /* la API puede estar caída; aun así se sale localmente */ }
+
+    stgDel('token');
+    stgDel('tokenGuardadoEn');
+    usuarioLogueado = null;
+
+    // Volver al inicio de la app para la próxima sesión
+    navegarA('rutinas');
+    if (document.getElementById('loginScreen')) document.getElementById('loginScreen').style.display = 'flex';
+    if (document.getElementById('appScreen')) document.getElementById('appScreen').style.display = 'none';
+    if (document.getElementById('errorMessage')) document.getElementById('errorMessage').style.display = 'none';
 }
 
 /* --------------------------------------------------------------
@@ -418,7 +447,7 @@ function navegarA(seccion) {
    OPCIONES / UTILIDADES
 -------------------------------------------------------------- */
 function toggleCyberTheme() {
-    document.body.classList.toggle('cyberpunk');
+    document.body.classList.toggle('cyberpunk-mode');
 }
 
 async function limpiarTodoElHistorial() {
@@ -445,11 +474,14 @@ async function limpiarTodoElHistorial() {
    SISTEMA DE PLANTILLAS, CATÁLOGO, CUESTIONARIO, NIVELES Y DESCANSO (NUEVO)
    ========================================================================== */
 const DESCANSO_LIMITE = 1800; // 30 minutos en segundos (auto-avance)
+const SESION_LIMITE_SEGUNDOS = 600; // 10 minutos para toda la sesión de ejercicio
 let plantillaCatalogo = [];
 let plantillaDetalleActual = null;
 let sesionActual = null;
 let ejerciciosSeleccionadosCrear = [];
 let descansoIntervalo = null;
+let sesionIntervalo = null;
+let segundosSesion = 0;
 let segundosDescanso = 0;
 let nivelUsuario = 1;
 let xpUsuario = 0;
@@ -751,6 +783,7 @@ async function renderSesionActiva(sesionId) {
         document.getElementById('sesionPlantillaNombre').textContent = data.sesion.plantilla_nombre;
         cargarNivelInfo();
         renderEjerciciosSesion(data.sesion.ejercicios);
+        iniciarTemporizadorSesion();
         document.getElementById('sesionActiva').scrollIntoView({ behavior: 'smooth' });
     } catch (e) {
         console.error(e);
@@ -759,6 +792,40 @@ async function renderSesionActiva(sesionId) {
 
 function esCompletado(e) {
     return e.completado === true || e.completado === 1 || e.completado === 't' || e.completado === '1' || e.completado === 'true';
+}
+
+function iniciarTemporizadorSesion() {
+    if (sesionIntervalo) return;
+    segundosSesion = SESION_LIMITE_SEGUNDOS;
+    const cont = document.getElementById('sesionTimer');
+    const txt = document.getElementById('sesionTimerTexto');
+    if (cont) cont.style.display = 'inline-flex';
+    const mostrar = () => {
+        const m = Math.floor(segundosSesion / 60).toString().padStart(2, '0');
+        const s = (segundosSesion % 60).toString().padStart(2, '0');
+        if (txt) txt.textContent = `${m}:${s}`;
+        if (segundosSesion <= 120) {
+            if (txt) txt.style.color = '#ff4757';
+        }
+    };
+    mostrar();
+    sesionIntervalo = setInterval(() => {
+        segundosSesion--;
+        if (segundosSesion <= 0) {
+            clearInterval(sesionIntervalo);
+            alert('⏰ ¡Tiempo de la sesión agotado! (10 minutos). Tu progreso quedó guardado.');
+            finalizarSesion();
+            return;
+        }
+        mostrar();
+    }, 1000);
+}
+
+function detenerTemporizadorSesion() {
+    clearInterval(sesionIntervalo);
+    sesionIntervalo = null;
+    const cont = document.getElementById('sesionTimer');
+    if (cont) cont.style.display = 'none';
 }
 
 function renderEjerciciosSesion(ejercicios) {
@@ -845,6 +912,7 @@ async function finalizarSesion() {
         const data = await r.json();
         if (!data.success) return alert(data.error || 'Error al finalizar');
         sesionActual = null;
+        detenerTemporizadorSesion();
         cargarNivelInfo();
         volverAPlantillas();
         cargarPlantillas();
@@ -984,6 +1052,9 @@ function toggleSeleccionCreador(id, nombre) {
     if (idx !== -1) {
         ejerciciosSeleccionadosCrear.splice(idx, 1);
     } else {
+        if (ejerciciosSeleccionadosCrear.length >= 10) {
+            return alert('Límite alcanzado: tu plantilla propia puede tener máximo 10 ejercicios.');
+        }
         ejerciciosSeleccionadosCrear.push({ id, nombre, series: 3, reps: '10', peso: 0 });
     }
     filtrarCreadorLista();
@@ -1003,6 +1074,7 @@ async function guardarNuevaPlantilla() {
     const nombre = document.getElementById('nuevaPlantillaNombre').value.trim();
     if (!nombre) return alert('Ponle un nombre a tu plantilla');
     if (!ejerciciosSeleccionadosCrear.length) return alert('Selecciona al menos un ejercicio');
+    if (ejerciciosSeleccionadosCrear.length > 10) return alert('Límite alcanzado: tu plantilla propia puede tener máximo 10 ejercicios');
 
     const token = stgGet('token');
     try {

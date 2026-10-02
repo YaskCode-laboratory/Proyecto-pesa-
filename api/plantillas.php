@@ -45,6 +45,12 @@ if ($action === 'crear') {
         exit;
     }
 
+    if (count($ejercicios) > 10) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Una plantilla propia puede tener máximo 10 ejercicios']);
+        exit;
+    }
+
     $dias = (int)($input['dias_por_semana'] ?? 3);
     try {
         $plantillaId = PlantillaDAO::crear($nombre, $input['descripcion'] ?? '', $tipo, $nivel, $uid, $dias, $ejercicios);

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de Pesas Pro v2026</title>
-    <link rel="stylesheet" href="styles.css?v=20260922-3">
+    <link rel="stylesheet" href="styles.css?v=20260930-2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
@@ -136,6 +136,9 @@
                 <li><a href="#" id="link-recomendados" class="menu-item" onclick="navegarA('recomendados')"><i class="fa-solid fa-fire-flame-curved icon-menu"></i> Catálogo de Ejercicios</a></li>
                 <li><a href="#" id="link-opciones" class="menu-item" onclick="navegarA('opciones')"><i class="fa-solid fa-sliders icon-menu"></i> Opciones</a></li>
             </ul>
+            <div class="menu-salir">
+                <a href="#" class="menu-item" onclick="cerrarSesion(event)"><i class="fa-solid fa-right-from-bracket icon-menu"></i> Cerrar sesión</a>
+            </div>
         </nav>
 
         <main class="main-content" id="mainContent">
@@ -218,7 +221,12 @@
                                 <h2 id="sesionPlantillaNombre"></h2>
                                 <span class="subtitle" id="sesionProgresoTexto">0/0 ejercicios completados</span>
                             </div>
-                            <button type="button" class="btn-danger-action" onclick="cancelarSesion()">Terminar Sesión</button>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div class="sesion-limit-timer" id="sesionTimer" style="display:none; background:rgba(255,71,87,0.15); border:1px solid #ff4757; border-radius:8px; padding:6px 12px; font-weight:700; font-size:15px; color:#ff4757;">
+                                    <i class="fa-solid fa-stopwatch"></i> <span id="sesionTimerTexto">10:00</span>
+                                </div>
+                                <button type="button" class="btn-danger-action" onclick="cancelarSesion()">Terminar Sesión</button>
+                            </div>
                         </div>
 
                         <!-- Barra de progreso de sesión -->
@@ -435,6 +443,13 @@
                             </div>
                             <button type="button" class="btn-danger-action" onclick="limpiarTodoElHistorial()">Formatear Tablas</button>
                         </div>
+                        <div class="option-row">
+                            <div class="opt-info">
+                                <h4>Cambiar de Cuenta</h4>
+                                <p>Cierra la sesión actual para entrar con otra cuenta. Tu token se elimina al instante.</p>
+                            </div>
+                            <button type="button" class="btn-toggle-switch" onclick="cerrarSesion()"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -572,6 +587,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js?v=20260922-3"></script>
+    <script src="script.js?v=20260930-2"></script>
 </body>
 </html>
