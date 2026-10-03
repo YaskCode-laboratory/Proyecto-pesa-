@@ -1,0 +1,16 @@
+# Evidencias / capturas
+
+Carpeta destinada a las evidencias del proyecto (pantallas del sistema en ejecución).
+
+Capturas que se deben agregar aquí (una por flujo principal):
+
+- `01_login.png` — pantalla de inicio de sesión
+- `02_cuestionario.png` — cuestionario inicial de datos
+- `03_panel.png` — panel principal con el menú lateral
+- `04_catalogo.png` — catálogo de ejercicios con filtros
+- `05_plantillas.png` — lista de plantillas
+- `06_crear_plantilla.png` — modal "Crear Plantilla" (manual)
+- `07_ia.png` — rutina generada por IA
+- `08_sesion.png` — sesión de entrenamiento con su descanso
+- `09_graficas.png` — sección Gráficas de Progreso
+- `10_records_logros.png` — récords y logros

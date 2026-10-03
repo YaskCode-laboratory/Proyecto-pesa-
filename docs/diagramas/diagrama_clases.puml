@@ -1,0 +1,130 @@
+@startuml
+!pragma layout smetana
+title Diagrama de Clases — PESAS PRO (backend PHP: capa de datos real)
+hide circle
+
+package "dao/ (acceso a datos + patrones)" {
+  class Conexion <<Singleton>> {
+    -static pdo : PDO
+    -__construct()
+    -__clone()
+    +static get() : PDO
+  }
+
+  class AuthDAO {
+    +static existeEmail(email) : bool
+    +static crearUsuario(email, hash, nombre) : array
+    +static buscarPorEmail(email) : ?array
+    +static crearSesion(usuarioId, token, expires) : void
+    +static validarToken(token) : ?int
+    +static usuarioPorToken(token) : ?array
+    +static eliminarSesion(token) : void
+    +static crearReset(usuarioId, token, expires) : void
+    +static resetValido(token) : ?int
+    +static actualizarPassword(usuarioId, hash) : void
+    +static marcarResetUsado(token) : void
+  }
+
+  class UsuarioDAO {
+    +static obtenerPorId(id) : ?array
+    +static nivelYProgresion(id) : ?array
+    +static guardarCuestionario(id, peso, edad, altura, genero, objetivo, nivel, dias) : void
+    +static activarProgresion(id, activo) : void
+    +static xpYNivel(id) : ?array
+    +static guardarXpYNivel(id, xp, nivel) : void
+    +static aplicarXp(id, xpGanado) : array
+  }
+
+  class PlantillaDAO {
+    +static listar(uid) : array
+    +static buscarAccesible(plantillaId, uid) : ?array
+    +static buscarConEjercicios(plantillaId, uid) : ?array
+    +static ejerciciosDe(plantillaId) : array
+    +static crear(nombre, descripcion, tipo, nivel, uid, dias, ejercicios) : int
+    +static eliminar(plantillaId, uid) : bool
+    +static activa(uid) : ?array
+    +static catalogo(grupo) : array
+  }
+
+  class SesionEntrenamientoDAO {
+    +static crear(uid, plantillaId, nivelPrev, ejercicios, factorNivel) : int
+    +static obtener(sesionId, uid) : ?array
+    +static ejerciciosDe(sesionId) : array
+    +static verificarAcceso(sesionEjercicioId, uid) : bool
+    +static marcarCompletado(sesionEjercicioId, series, reps, peso) : void
+    +static iniciarDescanso(sesionEjercicioId) : void
+    +static finDescanso(sesionEjercicioId) : void
+    +static finalizar(sesionId, uid, xp, nivelNuevo) : void
+  }
+
+  class EjercicioDAO {
+    +static insertar(uid, nombre, peso, series, reps) : array
+    +static nombreCatalogo(catalogoId) : ?string
+    +static listarRecientes(uid) : array
+    +static volumenTotal(uid) : float
+    +static totalEjercicios(uid) : int
+    +static eliminar(id, uid) : void
+    +static eliminarTodo(uid) : void
+  }
+
+  class RecordDAO {
+    +static normalizar(nombre) : string
+    +static registrarSiRecord(uid, nombre, peso, series, reps, ejercicioId) : array
+    +static listarRecords(uid) : array
+    +static racha(uid) : array
+    +static totalRecords(uid) : int
+  }
+
+  class LogroDAO {
+    +static definiciones() : array
+    +static evaluar(uid) : array
+  }
+
+  class BitacoraDAO {
+    +static registrar(uid, accion, detalle) : void
+    +static registrarAnonimo(accion, detalle) : void
+    +static listar(limite, uidFiltro) : array
+  }
+}
+
+package "api/ (controladores HTTP, sin SQL)" {
+  class auth <<controlador>>
+  class perfil <<controlador>>
+  class plantillas <<controlador>>
+  class sesiones <<controlador>>
+  class agregar_ejercicio <<controlador>>
+  class records <<controlador>>
+  class bitacora <<controlador>>
+}
+
+AuthDAO --> Conexion : usa (static get)
+UsuarioDAO --> Conexion : usa (static get)
+PlantillaDAO --> Conexion : usa (static get)
+SesionEntrenamientoDAO --> Conexion : usa (static get)
+EjercicioDAO --> Conexion : usa (static get)
+RecordDAO --> Conexion : usa (static get)
+LogroDAO --> Conexion : usa (static get)
+BitacoraDAO --> Conexion : usa (static get)
+
+auth --> AuthDAO : delega
+auth --> UsuarioDAO : delega
+perfil --> UsuarioDAO : delega
+plantillas --> PlantillaDAO : delega
+sesiones --> SesionEntrenamientoDAO : delega
+agregar_ejercicio --> EjercicioDAO : delega
+records --> RecordDAO : delega
+records --> LogroDAO : delega
+bitacora --> BitacoraDAO : delega
+
+note right of Conexion
+  Patron Singleton: una unica
+  conexion PDO por proceso (RNF7).
+  Las credenciales vienen del .env.
+end note
+
+note bottom of auth
+  El frontend nunca habla con la BD:
+  solo envia { action, token, ... } por
+  fetch() a api/*.php (JSON).
+end note
+@enduml

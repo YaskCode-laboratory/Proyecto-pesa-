@@ -1,0 +1,58 @@
+@startuml
+!pragma layout smetana
+title Diagrama de Casos de Uso — PESAS PRO
+left to right direction
+skinparam actorStyle awesome
+
+actor "Usuario\n(rol unico implementado)" as U
+actor "Servicio IA\n(Gemini / Ollama / heuristica)" as IA
+actor "Administrador de datos\n(PostgreSQL / scripts SQL)" as AD
+
+rectangle "Sistema de Gestion de Rutinas Wellness" {
+  usecase "Registrarse" as R
+  usecase "Iniciar sesion" as L
+  usecase "Completar cuestionario inicial" as Q
+  usecase "Recuperar contrasena" as RC
+  usecase "Explorar catalogo de ejercicios" as CA
+  usecase "Crear / editar / eliminar plantilla" as PL
+  usecase "Generar rutina con IA" as GIA
+  usecase "Iniciar y completar sesion de entrenamiento" as S
+  usecase "Gestionar descanso e hidratacion" as D
+  usecase "Ver historial y graficas de progreso" as H
+  usecase "Ver records y logros" as RL
+  usecase "Ver recomendaciones con IA" as REC
+  usecase "Cerrar sesion" as C
+}
+
+U --> R
+U --> L
+U --> Q
+U --> RC
+U --> CA
+U --> PL
+U --> GIA
+U --> S
+U --> D
+U --> H
+U --> RL
+U --> REC
+U --> C
+
+IA <-- GIA : genera la rutina
+IA <-- REC : analiza y recomienda
+IA <-- H : alimenta proyecciones
+
+AD --> CA : mantiene el catalogo (scripts SQL)
+
+note bottom of GIA
+  Motor hibrido en cascada:
+  1) Gemini → 2) Ollama → 3) heuristica local.
+  Siempre hay respuesta, incluso sin conexion.
+end note
+
+note bottom of D
+  Modal de descanso requitido
+  (auto-avance a los 30 min) con
+  recordatorio de hidratacion.
+end note
+@enduml
