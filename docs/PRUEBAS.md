@@ -4,75 +4,91 @@ Evidencia de las pruebas ejecutadas sobre la versión final del sistema (rama `m
 
 ---
 
-## 1. Alcance de las pruebas
+## 1. Mecanismo reproducible
 
-Se ejecutaron **31 pruebas end-to-end (e2e)** contra la API real **en local** (servidor PHP `:8000` + PostgreSQL + microservicio `:5001`). Cada prueba llamó a un endpoint con un caso real (crear usuario temporal → ejecutar el flujo → verificar la respuesta JSON → limpiar los datos de prueba).
+Las **31 pruebas e2e** se ejecutan mediante el script:
 
-**Resultado global: 31/31 PASS** (ningún fallo).
+```
+tests/pruebas_e2e.ps1
+```
 
-## 2. Matriz de pruebas por funcionalidad
+Este script es el **único punto de origen de la evidencia** (quedaba documentado "31/31 PASS" pero el script que lo reproduce no estaba en el repositorio; esta corrección lo incorpora).
 
-| # | Área | Endpoints / flujo cubierto | Resultado |
+### Requisitos para ejecutarlo
+
+1. **PostgreSQL** corriendo en `localhost:5432` con la base `pesas` (esquema y seeds aplicados).
+2. **Servidor PHP** activo: `php -S 127.0.0.1:8000 -t .` (la API queda en `/api`).
+3. **Microservicio de IA**: `cd python; python app.py` (puerto 5001).
+
+### Cómo ejecutarlo
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tests\pruebas_e2e.ps1
+```
+
+(Si los servicios están en otro host/puerto, pasarlos: `-ApiBase` y `-IaBase`.)
+
+**Salida esperada:** `RESULTADO FINAL: 31/31 PASS` y código de salida `0`.
+
+### Notas de higiene de datos
+
+- Los usuarios de prueba se crean con el dominio ficticio **`example.com`** (sin datos personales reales).
+- La **bitácora local** (`actividad.log`) solo se genera en la máquina de ejecución y **NO se sube al repositorio** (`.gitignore`); como evidencia se usa `docs/ejemplos/actividad.log.ejemplo` (datos ficticios).
+- Los usuarios de prueba quedan registrados en la BD; pueden borrarse manualmente con `psql` si se desea mantener la base limpia.
+
+### Prueba complementaria de recuperación de contraseña
+
+El flujo de "olvidé mi contraseña" (token de 1 h, token usado/vencido) se verifica aparte con:
+
+```bash
+php test_recuperacion.php
+```
+
+Resultado: **PASS** (se probaron tokens válidos, vencidos y ya usados).
+
+## 2. Matriz de las 31 pruebas e2e (idéntica a `tests/pruebas_e2e.ps1`)
+
+| # | Área | Endpoint / flujo | Resultado esperado |
 |---|---|---|---|
-| 1 | Autenticación — registro | `auth.php` → `registro` | ✅ PASS |
-| 2 | Autenticación — login | `auth.php` → `login` (credenciales correctas) | ✅ PASS |
-| 3 | Autenticación — login inválido | `auth.php` → `login` (contraseña errónea → 401) | ✅ PASS |
-| 4 | Autenticación — validar sesión | `auth.php` → `validar_sesion` con token vigente | ✅ PASS |
-| 5 | Autenticación — token vencido/ausente | Endpoint protegido sin token → 401 | ✅ PASS |
-| 6 | Autenticación — logout | `auth.php` → `logout` (sesión eliminada) | ✅ PASS |
-| 7 | **Perfil** — cuestionario inicial | `perfil.php` → `guardar_cuestionario` (peso, edad, altura, género, objetivo, nivel, días) | ✅ PASS |
-| 8 | **Perfil** — validación de rangos | Cuestionario con valores fuera de rango → 400 | ✅ PASS |
-| 9 | **Catálogo** — listar ejercicios | `plantillas.php` → `catalogo` (104 ejercicios, por grupo) | ✅ PASS |
-| 10 | **Catálogo** — filtro por grupo | `plantillas.php` → `catalogo` con grupo (pecho/espalda/pierna…) | ✅ PASS |
-| 11 | **Plantillas** — crear a mano | `plantillas.php` → `crear` (con máx. 10 ejercicios) | ✅ PASS |
-| 12 | **Plantillas** — listar propias | `plantillas.php` → `listar` | ✅ PASS |
-| 13 | **Plantillas** — ver detalle | `plantillas.php` → `detalle` (con ejercicios y su ejercicio del catálogo) | ✅ PASS |
-| 14 | **Plantillas** — renombrar/ajustar | `plantillas.php` → `renombrar` | ✅ PASS |
-| 15 | **Plantillas** — eliminar | `plantillas.php` → `eliminar` (y bloqueo si tiene sesiones) | ✅ PASS |
-| 16 | **Plantillas** — propiedad ajena | Acceso a plantilla de otro usuario → 403 | ✅ PASS |
-| 17 | **Sesiones** — iniciar | `sesiones.php` → `iniciar` (crea sesión desde plantilla con ajuste por nivel) | ✅ PASS |
-| 18 | **Sesiones** — completar ejercicio | `sesiones.php` → `completar_ejercicio` (series, reps, peso) | ✅ PASS |
-| 19 | **Sesiones** — descanso activar/finalizar | `sesiones.php` → descanso (inicio/fin) | ✅ PASS |
-| 20 | **Sesiones** — finalizar sesión | `sesiones.php` → `finalizar` (+ XP y nivel) | ✅ PASS |
-| 21 | **Sesiones** — acceso a sesión ajena | `verificarAcceso` en sesión de otro usuario → 403 | ✅ PASS |
-| 22 | **Historial** — registrar ejercicio | `agregar_ejercicio.php` → `registrar` | ✅ PASS |
-| 23 | **Historial** — listar recientes | `agregar_ejercicio.php` → `listar` | ✅ PASS |
-| 24 | **Récords** — detección de marca | `records.php` → `records` (nuevo récord detectado, 1RM Epley) | ✅ PASS |
-| 25 | **Logros** — desbloqueo | `records.php` → logros (medalla nueva con su fecha) | ✅ PASS |
-| 26 | **IA** — análisis de progreso | microservicio `:5001` → `/analisis/progreso` | ✅ PASS |
-| 27 | **IA** — distribución de intensidad | microservicio `:5001` → `/analisis/distribucion` | ✅ PASS |
-| 28 | **IA** — proyección y racha | microservicio `:5001` → `/analisis/proyeccion`, `/analisis/racha` | ✅ PASS |
-| 29 | **IA** — generación de rutina | microservicio `:5001` → `POST /plantilla_ia` (cascada → heurística) | ✅ PASS |
-| 30 | **Recuperación de contraseña** | `auth.php` → `recover_request` + `recover_reset` (token 1 h) + script `test_recuperacion.php` | ✅ PASS |
-| 31 | **Bitácora** — listar y registrar | `bitacora.php` → `listar` y registro automático de acciones | ✅ PASS |
+| 01 | Autenticación | `auth.php → registro` | 200 + `success` |
+| 02 | Autenticación | `auth.php → registro` (email repetido) | 409 |
+| 03 | Autenticación | `auth.php → login` (credenciales correctas, token de 64 caracteres) | 200 + `token` |
+| 04 | Autenticación | `auth.php → login` (contraseña incorrecta) | 401 |
+| 05 | Autenticación | `auth.php → validar` (token vigente) | 200 + `success` |
+| 06 | Autenticación | `auth.php → validar` (token inválido) | 401 |
+| 07 | Perfil | `perfil.php → guardar_cuestionario` (rango válido) | 200 + `success` |
+| 08 | Perfil | `perfil.php → guardar_cuestionario` (peso = 0) | 400 |
+| 09 | Catálogo | `plantillas.php → catalogo` (104 ejercicios) | 200, ≥ 1 ejercicio con `id` |
+| 10 | Catálogo | `plantillas.php → catalogo&grupo=pecho` (filtro) | 200 + `success` |
+| 11 | Plantillas | `plantillas.php → crear` (manual, 2 ejercicios) | 200 + `plantilla_id` |
+| 12 | Plantillas | `plantillas.php → crear` (11 ejercicios, máximo 10) | 400 |
+| 13 | Plantillas | `plantillas.php → listar` (contiene la creada) | 200 + coincide `id` |
+| 14 | Plantillas | `plantillas.php → obtener` (detalle con ejercicios) | 200 + ejercicios ≥ 1 |
+| 15 | Plantillas | `plantillas.php → eliminar` (plantilla propia) | 200 + `success` |
+| 16 | Plantillas | Usuario B: `registro` + `login` | 200 + `tokenB` |
+| 17 | Plantillas | `obtener` plantilla ajena con token de B | 404 |
+| 18 | Sesiones | `sesiones.php → iniciar` (desde plantilla) | 200 + `sesion_id` |
+| 19 | Sesiones | `sesiones.php → obtener` (ejercicios con su `id`) | 200 + `ejercicios[0].id` |
+| 20 | Sesiones | `sesiones.php → completar_ejercicio` | 200 + `success` |
+| 21 | Sesiones | `iniciar_descanso` + `fin_descanso` | 200 + `success` |
+| 22 | Sesiones | `sesiones.php → finalizar` (XP ≥ 50) | 200 + `xp_ganado ≥ 50` |
+| 23 | Sesiones | `obtener` sesión ajena con token de B | 404 |
+| 24 | Historial | `agregar_ejercicio.php → agregar_ejercicio` (volumen > 0) | 200 + `volumenTotal > 0` |
+| 25 | Historial | `agregar_ejercicio.php → listar` | 200 + `totalEjercicios ≥ 1` |
+| 26 | Récords | `records.php → listar` (records, racha, stats, logros) | 200 + campo `logros` |
+| 27 | Bitácora | `bitacora.php → listar` | 200 + `entradas ≥ 1` |
+| 28 | Autenticación | `auth.php → logout` | 200 + `success` |
+| 29 | Autenticación | `auth.php → validar` tras logout | 401 |
+| 30 | IA | `GET /analisis/progreso?token=` (`:5001`) | 200 + `success` |
+| 31 | IA | `POST /plantilla_ia` (generación y guardado) | 200 + `success` + ejercicios |
 
-## 3. Prueba de recuperación de contraseña (e2e dedicada)
+**Resultado global: 31/31 PASS** — sin fallos en la versión final.
 
-El archivo `test_recuperacion.php` cubre aparte el flujo completo de "olvidé mi contraseña":
+## 3. Pruebas unitarias e integración continua
 
-1. Solicitud de recuperación → se genera un token de reseteo con expiración de 1 h.
-2. Confirmación del correo de destino (flujo `recover_confirm`).
-3. Cambio de contraseña con un token válido.
-4. Rechazo de un token usado (`usado = TRUE`) o vencido.
+- Las pruebas unitarias formales (PHPUnit/pytest) y la integración continua (GitHub Actions) **no se implementaron**; quedan declaradas como pendiente de madurez en `ESTUDIO_CUMPLIMIENTO.md` (RNF13) y `CIERRE_PROYECTO.md`. La corrección del revisor no lo exige ("No es necesario crear retrospectivamente Pull Requests o GitHub Actions").
 
-**Resultado: PASS** (probado con tokens válidos, vencidos y ya usados).
-
-## 4. Cómo ejecutar las pruebas
-
-Requisito: servicios levantados (PHP `:8000`, PostgreSQL, y el microservicio en `:5001`).
-
-1. Abrir una consola en la raíz del proyecto.
-2. Lanzar el script e2e de pruebas (PowerShell) con el mismo esquema de las 31 pruebas anteriores.
-3. La salida debe reportar `31/31 PASS`.
-4. La prueba dedicada de recuperación se ejecuta con el servidor web activo:
-
-   ```bash
-   php test_recuperacion.php
-   ```
-
-> **Nota de coherencia:** las pruebas e2e están documentadas como evidencia (RNF13 = Parcial). Las pruebas **unitarias formales** (PHPUnit/pytest) y la **integración continua** (GitHub Actions) quedan como pendiente de madurez, según `ESTUDIO_CUMPLIMIENTO.md` y `CIERRE_PROYECTO.md`.
-
-## 5. Correcciones realizadas por hallazgos de las pruebas
+## 4. Correcciones realizadas por hallazgos de las pruebas
 
 | Hallazgo | Corrección aplicada |
 |---|---|

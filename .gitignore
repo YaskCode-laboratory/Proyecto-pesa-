@@ -6,3 +6,6 @@ __pycache__/
 .env
 *.env
 api/config.local.php
+
+# Bitácora local (contiene datos de usuarios reales: NO se sube)
+actividad.log

@@ -1,6 +1,6 @@
 # PESAS PRO — Sistema de Gestión de Rutinas Wellness
 
-**Proyecto-pesa-** · Gestor de rutinas de entrenamiento con inteligencia artificial, desarrollado en semestre para la asignatura de Programación Orientada a Objetos.
+**Proyecto-pesa-** · Gestor de rutinas de entrenamiento con inteligencia artificial, desarrollado en el semestre para la asignatura de **Ingeniería de Software**.
 
 PESAS PRO es una aplicación web completa (frontend + backend + base de datos + microservicio de IA) que permite a una persona registrarse, completar su perfil de entrenamiento, explorar un catálogo de ejercicios, crear sus propias rutinas (a mano o generadas por IA), registrar sus sesiones de entrenamiento y seguir su evolución con historial, gráficas, récords y logros.
 
@@ -140,7 +140,7 @@ La clave `GEMINI_API_KEY` vive **solo en el archivo `.env`** (ignorado por Git, 
 
 ## Pruebas
 
-- **31 pruebas end-to-end (e2e)** por línea de comandos (PowerShell) contra la API real: autenticación, cuestionario, plantillas, sesiones, descanso, récords, logros, recuperación de contraseña y bitácora — **todas PASS**.
+- **31 pruebas end-to-end (e2e)** reproducibles con el script [`tests/pruebas_e2e.ps1`](tests/pruebas_e2e.ps1) (PowerShell) contra la API real: autenticación, perfil, catálogo, plantillas, sesiones, historial, récords/logros y bitácora, más la generación de rutinas por IA — **todas PASS**.
 - `test_recuperacion.php`: prueba del flujo completo de recuperación de contraseña (token de 1 h).
 - Detalle de casos, resultados y correcciones en [`docs/PRUEBAS.md`](docs/PRUEBAS.md).
 
@@ -159,7 +159,7 @@ Carpeta para evidencias: [`docs/capturas/`](docs/capturas/) (pantallas de Login,
 **Funcionando correctamente** en entorno local con PostgreSQL. Cumplimiento estimado de **75–80 %** sobre el PDF de partida (ver [`ESTUDIO_CUMPLIMIENTO.md`](ESTUDIO_CUMPLIMIENTO.md)).
 
 Pendientes documentados:
-- Roles diferenciados (Administrador/Instructor/Cliente) — RF1, RF3, RF13.
+- **Roles**: el sistema opera con rol único de Usuario; la reducción de alcance está documentada y aceptada en [`docs/REDUCCION_ALCANCE_ROLES.md`](docs/REDUCCION_ALCANCE_ROLES.md).
 - Videos de YouTube embebidos en el catálogo — RF5.
 - Pruebas unitarias formales (PHPUnit/pytest) — RNF13.
 - Despliegue en la nube e integración continua (GitHub Actions) — RNF12.

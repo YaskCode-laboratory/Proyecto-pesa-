@@ -65,7 +65,7 @@ El procedimiento es **reproducible** desde el repositorio (detallado en `README.
 - **Base de datos**: el esquema y los seeds están versionados (`.sql`), de modo que cualquier entorno puede reconstruirse; cambios de estructura se agregan como scripts de migración (`migracion_plantillas.sql`).
 - **Catálogo de ejercicios**: se amplía insertando filas en `ejercicios_catalogo` (nombre, foto, grupo, descripción, pasos).
 - **Seguridad**: renovar `DB_PASS`/`GEMINI_API_KEY`, rotar tokens de sesión, y **nunca** editar `.env` en el repositorio.
-- **Bitácora**: `actividad.log` acumula las acciones; vigilar su tamaño y rotarlo si crece.
+- **Bitácora**: `actividad.log` acumula las acciones solo en la máquina local (está en `.gitignore` por contener datos de usuarios); vigilar su tamaño y rotarlo si crece. Como evidencia pública se usa `docs/ejemplos/actividad.log.ejemplo` (datos ficticios).
 - **Versiones**: cada cambio debe reflejarse en `ESTUDIO_CUMPLIMIENTO.md` y, si altera la arquitectura, actualizar los diagramas UML.
 
 ## 7. Conclusiones

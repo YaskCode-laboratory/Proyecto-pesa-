@@ -22,7 +22,7 @@ El proyecto implementado utiliza:
 - Frontend **HTML/CSS/JavaScript** (diseño original migrado)
 - Autenticación con **tokens de sesión** (24h)
 - **Patrones DAO y Singleton implementados** en la capa PHP (`dao/`)
-- Roles implementados: **Usuario único** (no se diferencia Admin/Instructor/Cliente)
+- Roles implementados: **Usuario único** (no se diferencia Admin/Instructor/Cliente). Reducción de alcance documentada y aceptada — ver `docs/REDUCCION_ALCANCE_ROLES.md`.
 
 **Divergencias restantes:**
 - Lenguaje backend diferente (PHP/Python vs Java/C#).

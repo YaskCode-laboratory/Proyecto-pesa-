@@ -1,0 +1,25 @@
+2026-09-21 09:12:04 | U1 | usuario.prueba1@example.com | REGISTRO | Nuevo usuario registrado: usuario.prueba1@example.com
+2026-09-21 09:12:12 | U1 | usuario.prueba1@example.com | LOGIN | Inicio de sesión
+2026-09-21 09:12:38 | U1 | usuario.prueba1@example.com | GUARDAR CUESTIONARIO | Objetivo: ganar_musculo · Nivel: intermedio · 3 días/semana
+2026-09-21 09:14:02 | U1 | usuario.prueba1@example.com | CREAR PLANTILLA | Empuje A · 6 ejercicios · empuje
+2026-09-21 09:15:41 | U1 | usuario.prueba1@example.com | INICIAR ENTRENAMIENTO | Plantilla: Empuje A · 6 ejercicios
+2026-09-21 09:16:57 | U1 | usuario.prueba1@example.com | COMPLETAR EJERCICIO | Press de banca · 4x8 · 50 kg
+2026-09-21 09:17:05 | U1 | usuario.prueba1@example.com | NUEVO RÉCORD | peso_maximo = 50 (Press de banca)
+2026-09-21 09:32:10 | U1 | usuario.prueba1@example.com | FINALIZAR ENTRENAMIENTO | sesion_id 12 · XP ganado: +170 · Nivel actual: 3
+2026-09-21 18:03:44 | U2 | usuario.prueba2@example.com | REGISTRO | Nuevo usuario registrado: usuario.prueba2@example.com
+2026-09-21 18:04:01 | U2 | usuario.prueba2@example.com | LOGIN | Inicio de sesión
+2026-09-21 18:05:20 | U2 | usuario.prueba2@example.com | SOLICITAR CAMBIO DE CONTRASEÑA | Token de recuperación generado para usuario.prueba2@example.com
+2026-09-21 18:07:33 | U2 | usuario.prueba2@example.com | CONTRASEÑA CAMBIADA | Contraseña actualizada mediante token de recuperación
+2026-09-21 18:22:09 | U2 | usuario.prueba2@example.com | GENERAR PLANTILLA IA | plantilla_id 25 · motor heuristica · 4 ejercicios
+2026-09-22 07:45:11 | U1 | usuario.prueba1@example.com | LOGIN | Inicio de sesión
+2026-09-22 07:47:58 | U1 | usuario.prueba1@example.com | AGREGAR EJERCICIO | Sentadilla · 3x12 · 60 kg
+2026-09-22 07:48:03 | U1 | usuario.prueba1@example.com | LOGRO DESBLOQUEADO | vol_1000
+2026-09-22 08:00:47 | U1 | usuario.prueba1@example.com | LOGOUT | Cierre de sesión
+2026-09-22 09:30:26 | | | GENERAR PLANTILLA IA | plantilla_id 28 · motor heuristica · 5 ejercicios
+
+--------------------------------------------------------------------
+ARCHIVO DE EJEMPLO — datos 100 % ficticios (dominio example.com).
+El archivo real `actividad.log` se genera en la raíz del proyecto al
+ejecutar el sistema y NO se sube al repositorio (ver .gitignore):
+contiene correos electrónicos y trazas de usuarios reales.
+--------------------------------------------------------------------
